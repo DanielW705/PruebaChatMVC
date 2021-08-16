@@ -1,0 +1,34 @@
+﻿@model PruebaChatMVC.Models.User
+<div class="cuerpo-LogIn">
+    <div class="log-in">
+        <div class="seleccion-log-reg">
+            <div id="Select" class="selecter"></div>
+            <div class="options-area">
+                <span onclick="Toregistrar()">Ingresar</span>
+                <span onclick="Toingresar()">Registrarte</span>
+            </div>
+        </div>
+        <div class="data-inser-sect">
+            <form method="post" class="datos-log" asp-action="Index" asp-controller="Home">
+                <h2>Ingresar</h2>
+                <div class="input-zone">
+                    <span class="title">Usuario:</span>
+                    <input type="text" value="" placeholder="Usuario" name="UserName" asp-for="UserName" />
+                </div>
+                <span class="errorSpan" asp-validation-for="UserName"></span>
+                <div class="input-zone">
+                    <span class="title">Contraseña:</span>
+                    <input type="text" value="" placeholder="Contraseña" name="Pasword" asp-for="Pasword" />
+                </div>
+                <span class="errorSpan" asp-validation-for="Pasword"></span>
+                <button type="submit">Ingresar</button>
+            </form>
+            <form method="post" class="datos-regist">
+                <input type="text" value="" />
+                <input type="text" value="" />
+                <button>Registrarte</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script src="~/js/index.js"></script>
