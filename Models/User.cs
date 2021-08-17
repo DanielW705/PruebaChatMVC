@@ -20,7 +20,6 @@ namespace PruebaChatMVC.Models
         public string Pasword { get => pasword; set => pasword = value; }
         public User()
         {
-
         }
     }
 }

@@ -194,19 +194,20 @@ body {
             list-style: none;
             border: 1px solid transparent;
             background-color: #DD8EEB;
-            width: 60px;
+            width: 65px;
             text-align: center;
-            min-height: 3.3rem;
+            min-height: 3.6rem;
             border-radius: 5px;
             cursor: pointer;
             box-shadow: 7px 4px 8px #555454, 0px -4px 8px #6c6b6b;
             color: snow;
             padding: 12%;
-            font-size: 17px;
+            font-size: 16px;
+            word-break: break-all;
             margin-bottom: 1.5rem;
         }
 
-            .connected-nav > ul > li::before {
+/*            .connected-nav > ul > li::before {
                 content: " ";
                 width: 10px;
                 background-color: green;
@@ -217,7 +218,7 @@ body {
                 top: 53px;
                 left: 72px;
                 box-shadow: ;
-            }
+            }*/
 
 /*            .connected-nav > ul > li:hover {
                 transform: scale(1.2);

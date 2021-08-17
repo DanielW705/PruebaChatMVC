@@ -3,27 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
+using System.Text.Json;
+using PruebaChatMVC.Models;
 
 namespace PruebaChatMVC.Hubs
 {
     public class ChatHub : Hub
     {
-        static List<string> IDConectados = new List<string>();
-        public async Task SendMessage(string user, string message)
+        static List<UserChat> listaUsuarios = new List<UserChat>();
+        public void EliminarCopia()
         {
-            await Clients.All.SendAsync("MessageRecive", user, message);
+
         }
-        public override Task OnConnectedAsync()
+        public async Task UsuarioConectado(string nombre)
         {
-            IDConectados.Add(Context.ConnectionId);
-            Clients.All.SendAsync("UserConnect", IDConectados.ToArray());
-            return base.OnConnectedAsync();
+            listaUsuarios.Add(new UserChat(Guid.NewGuid(), nombre, Context.ConnectionId));
+            string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
+            await Clients.All.SendAsync("RetornoDeConectados", lista);
         }
-        public override Task OnDisconnectedAsync(Exception exception)
-        {
-            IDConectados.Remove(Context.ConnectionId);
-            Clients.All.SendAsync("UserDisconect", IDConectados.ToArray());
-            return base.OnDisconnectedAsync(exception);
-        }
+
     }
 }
