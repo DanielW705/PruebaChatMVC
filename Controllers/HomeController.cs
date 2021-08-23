@@ -18,11 +18,11 @@ namespace PruebaChatMVC.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
             return View();
         }
-
         public IActionResult Privacy()
         {
             return View();
@@ -36,7 +36,7 @@ namespace PruebaChatMVC.Controllers
             }
             else
             {
-                return RedirectToAction("Privacy");
+                return RedirectToAction("Privacy", "Home");
             }
         }
     }

@@ -124,7 +124,7 @@ body {
     width: 100%;
 }
 
-    .input-zone > input[type="text"] {
+    .input-zone > input[type="text"], .input-zone > input[type="password"] {
         width: 65%;
         border: none;
         padding: 2px;

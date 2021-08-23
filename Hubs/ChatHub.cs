@@ -11,9 +11,9 @@ namespace PruebaChatMVC.Hubs
     public class ChatHub : Hub
     {
         static List<UserChat> listaUsuarios = new List<UserChat>();
-        public void EliminarCopia()
+        public override Task OnConnectedAsync()
         {
-
+            return base.OnConnectedAsync();
         }
         public async Task UsuarioConectado(string nombre)
         {
@@ -21,6 +21,17 @@ namespace PruebaChatMVC.Hubs
             string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
             await Clients.All.SendAsync("RetornoDeConectados", lista);
         }
-
+        public async Task UsuarioDesconectado()
+        {
+            await Clients.All.SendAsync("RetornoDeDatos", listaUsuarios);
+        }
+        public override Task OnDisconnectedAsync(Exception exception)
+        {
+            UserChat usuarioAEliminar = (from usurio in listaUsuarios
+                                         where usurio.idChat == Context.ConnectionId
+                                         select usurio).First();
+            listaUsuarios.Remove(usuarioAEliminar);
+            return base.OnDisconnectedAsync(exception);
+        }
     }
 }

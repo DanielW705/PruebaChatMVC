@@ -1,13 +1,11 @@
 ﻿"use strict"
-window.addEventListener("beforeunload", () => {
-    return "NO te vayas";
-});
 const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 connection.start().then(() => {
-    connection.invoke("UsuarioConectado", "nombre");
+    connection.invoke("UsuarioConectado", nombreUsuario);
 });
 connection.on("RetornoDeConectados", (respuesta) => {
     const listaCon = document.getElementById("lista-conectados");
+    listaCon.innerHTML = " ";
     const lista = JSON.parse(respuesta);
     lista.forEach(objeto => {
         const li = document.createElement("li");
