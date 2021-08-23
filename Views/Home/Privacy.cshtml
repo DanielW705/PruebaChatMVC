@@ -1,6 +1,14 @@
-﻿<nav class="connected-nav">
+﻿@model string
+<input type="hidden" value="@Model" id="userName" />
+<nav class="connected-nav">
     <ul id="lista-conectados">
     </ul>
 </nav>
+<div class="message-body">
+
+</div>
+<script type="text/javascript">
+    const url = "@Url.Action("MensajesChat","Home")";
+</script>
 <script src="~/js/signalr/dist/browser/signalr.js"></script>
 <script src="/js/Chat.js"></script>

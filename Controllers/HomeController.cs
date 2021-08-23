@@ -23,10 +23,6 @@ namespace PruebaChatMVC.Controllers
         {
             return View();
         }
-        public IActionResult Privacy()
-        {
-            return View();
-        }
         [HttpPost]
         public IActionResult Index(User usuario)
         {
@@ -36,8 +32,12 @@ namespace PruebaChatMVC.Controllers
             }
             else
             {
-                return RedirectToAction("Privacy", "Home");
+                return View("Privacy", usuario.UserName);
             }
+        }
+        public IActionResult MensajesChat([FromBody] string idUsuario)
+        {
+            return PartialView(idUsuario);
         }
     }
 }

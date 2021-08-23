@@ -173,7 +173,7 @@ body {
 
 
 .connected-nav {
-    width: 12%;
+    width: 15%;
     height: 90%;
     position: fixed;
     background-color: #607AFF;
@@ -194,7 +194,7 @@ body {
             list-style: none;
             border: 1px solid transparent;
             background-color: #DD8EEB;
-            width: 65px;
+            width: 80px;
             text-align: center;
             min-height: 3.6rem;
             border-radius: 5px;
