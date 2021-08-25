@@ -31,13 +31,14 @@ const ListCreation = (StringResult) => {
     });
 };
 const FetchAPartialView = (idUser) => {
+    const valor = JSON.stringify({
+        "idUsuario" : idUser
+    });
     fetch(url,
         {
             method: "POST",
             headers: guardarHeaders(),
-            body: JSON.stringify({
-                "idUsuario": idUser
-            }),
+            body: valor,
             redirect: "follow"
         }
     ).then(async (resposne) => {

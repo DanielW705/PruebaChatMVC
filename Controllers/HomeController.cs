@@ -11,13 +11,34 @@ namespace PruebaChatMVC.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly ILogger<HomeController> _logger;
+        /********Metodos o funciones*******/
+        public Guid limpiarGuid(string GuidCon)
+        {
+            /***Se guarda lo que es despues del :***/
+            string GuidLimpiando = GuidCon.Split(":")[1];
+            /********Un string limpio*********/
+            string GuidLimipo = string.Empty;
+            /*******Se vuelve a barrer***********/
+            foreach (char GuidCaracter in GuidLimpiando)
+            {
+                /********Analiza si es letra o digito********/
+                if (char.IsLetterOrDigit(GuidCaracter))
+                {
+                    GuidLimipo += GuidCaracter;
+                }
 
+            }
+            /*******Hace el parseo**********/
+            return Guid.Parse(GuidLimipo);
+        }
+        /****Inyeccion de dependencias********/
+        private readonly ILogger<HomeController> _logger;
+        /*********Construtor**********/
         public HomeController(ILogger<HomeController> logger)
         {
             _logger = logger;
         }
-
+        /*********Nodos************/
         [HttpGet]
         public IActionResult Index()
         {
@@ -35,9 +56,10 @@ namespace PruebaChatMVC.Controllers
                 return View("Privacy", usuario.UserName);
             }
         }
-        public IActionResult MensajesChat([FromBody] string idUsuario)
+        public IActionResult MensajesChat([FromBody] object idUser)
         {
-            return PartialView(idUsuario);
+            Guid GuidDelUsuario = limpiarGuid(idUser.ToString());
+            return PartialView(model: GuidDelUsuario.ToString());
         }
     }
 }
