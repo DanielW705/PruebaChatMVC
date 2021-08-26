@@ -16,7 +16,7 @@ body {
     background-color: #607AFF;
 }
 
-    .custom-nav > h1 {
+    .custom-nav h1 {
         display: flex;
         height: 100%;
         justify-content: flex-start;
@@ -35,7 +35,7 @@ body {
     justify-content: center;
 }
 
-    .cuerpo-LogIn > .log-in {
+    .cuerpo-LogIn .log-in {
         width: 30%;
         max-width: 400px;
         height: 300px;
@@ -45,7 +45,7 @@ body {
         z-index: 1;
     }
 
-        .cuerpo-LogIn > .log-in > .seleccion-log-reg {
+        .cuerpo-LogIn .log-in .seleccion-log-reg {
             height: 15%;
             display: flex;
             flex-direction: row;
@@ -55,7 +55,7 @@ body {
             z-index: 1;
         }
 
-            .cuerpo-LogIn > .log-in > .seleccion-log-reg > .selecter {
+            .cuerpo-LogIn .log-in .seleccion-log-reg .selecter {
                 position: absolute;
                 height: 80%;
                 width: 7rem;
@@ -65,7 +65,7 @@ body {
                 transition: 0.5s;
             }
 
-            .cuerpo-LogIn > .log-in > .seleccion-log-reg > .options-area {
+            .cuerpo-LogIn .log-in .seleccion-log-reg .options-area {
                 width: 217px;
                 height: 80%;
                 display: flex;
@@ -76,7 +76,7 @@ body {
                 z-index: 1;
             }
 
-                .cuerpo-LogIn > .log-in > .seleccion-log-reg > .options-area > span {
+                .cuerpo-LogIn .log-in .seleccion-log-reg .options-area span {
                     width: 5rem;
                     height: 1.5rem;
                     text-align: center;
@@ -87,7 +87,7 @@ body {
                     padding: 0.2rem;
                 }
 
-        .cuerpo-LogIn > .log-in > .data-inser-sect {
+        .cuerpo-LogIn .log-in .data-inser-sect {
             height: 85%;
             display: flex;
             justify-content: center;
@@ -96,12 +96,12 @@ body {
             overflow: hidden;
         }
 
-            .cuerpo-LogIn > .log-in > .data-inser-sect > form {
+            .cuerpo-LogIn .log-in .data-inser-sect form {
                 min-width: 100%;
                 position: relative;
             }
 
-            .cuerpo-LogIn > .log-in > .data-inser-sect > .datos-log {
+            .cuerpo-LogIn .log-in .data-inser-sect .datos-log {
                 left: 50%;
                 display: flex;
                 flex-direction: column;
@@ -109,7 +109,7 @@ body {
                 align-items: center;
             }
 
-                .cuerpo-LogIn > .log-in > .data-inser-sect > .datos-log > h2 {
+                .cuerpo-LogIn .log-in .data-inser-sect .datos-log > h2 {
                     color: aliceblue;
                     text-align: center;
                     font-family: 'Noto Sans JP', sans-serif;
@@ -124,7 +124,7 @@ body {
     width: 100%;
 }
 
-    .input-zone > input[type="text"], .input-zone > input[type="password"] {
+    .input-zone input[type="text"], .input-zone input[type="password"] {
         width: 65%;
         border: none;
         padding: 2px;
@@ -132,7 +132,7 @@ body {
         height: 100%;
     }
 
-    .input-zone > .title {
+    .input-zone .title {
         width: 35%;
         font-size: 75%;
         text-align: center;
@@ -145,7 +145,7 @@ body {
         height: 100%;
     }
 
-.cuerpo-LogIn > .log-in > .data-inser-sect > .datos-log > .errorSpan {
+.cuerpo-LogIn .log-in .data-inser-sect .datos-log .errorSpan {
     color: red;
     font-size: 15px;
     width: 100%;
@@ -157,7 +157,7 @@ body {
     list-style: circle;
 }
 
-.cuerpo-LogIn > .log-in > .data-inser-sect > .datos-log > button {
+.cuerpo-LogIn .log-in .data-inser-sect .datos-log button {
     border: none;
     width: 50%;
     height: 25px;
@@ -166,7 +166,7 @@ body {
     color: #696969;
 }
 
-.cuerpo-LogIn > .log-in > .data-inser-sect > .datos-regist {
+.cuerpo-LogIn .log-in .data-inser-sect .datos-regist {
     left: 100%;
 }
 /**************Private page*******************/
@@ -179,7 +179,7 @@ body {
     background-color: #607AFF;
 }
 
-    .connected-nav > ul {
+    .connected-nav ul {
         width: 100%;
         height: 100%;
         display: flex;
@@ -190,7 +190,7 @@ body {
         overflow: auto;
     }
 
-        .connected-nav > ul > li {
+        .connected-nav ul li {
             list-style: none;
             border: 1px solid transparent;
             background-color: #DD8EEB;
@@ -206,7 +206,41 @@ body {
             word-break: break-all;
             margin-bottom: 1.5rem;
         }
+/*******Cuerpo del chat***/
+.message-body {
+    position: fixed;
+    width: 85%;
+    height: 90%;
+    background-color: rgb(236 240 241 / 0.30);
+    left: 15%;
+    display: flex;
+    flex-direction: column;
+}
 
+    .message-body .message-show {
+        width: 100%;
+        height: 90%;
+        background-color: #ccbbbb82;
+        border: 1.5px solid #060606;
+    }
+
+    .message-body .input-message {
+        display: flex;
+        width: 100%;
+        height: 10%;
+        font-family: 'Noto Sans JP', sans-serif;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .message-body .input-message input[type="text"] {
+            width: 80%;
+            height: 70%;
+            border: none;
+            padding: 20px;
+            font-size: 20px;
+            border-radius: 5px 0px 0px 5px;
+        }
 /*            .connected-nav > ul > li::before {
                 content: " ";
                 width: 10px;

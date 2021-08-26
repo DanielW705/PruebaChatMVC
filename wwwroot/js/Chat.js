@@ -32,7 +32,7 @@ const ListCreation = (StringResult) => {
 };
 const FetchAPartialView = (idUser) => {
     const valor = JSON.stringify({
-        "idUsuario" : idUser
+        "idUsuario": idUser
     });
     fetch(url,
         {
@@ -41,9 +41,13 @@ const FetchAPartialView = (idUser) => {
             body: valor,
             redirect: "follow"
         }
-    ).then(async (resposne) => {
-        let respuesta = await resposne.text()
-        console.log(respuesta);
+    ).then(resposne => resposne.text()).then(result => {
+        const mostrar = document.querySelector(".message-body");
+        const div = document.createElement("div");
+        div.innerHTML = result;
+        div.childNodes.forEach((child) => {
+            mostrar.appendChild(child);
+        });
     });
 };
 const agregarListener = (Node) => {
