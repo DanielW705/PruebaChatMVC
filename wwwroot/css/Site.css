@@ -43,6 +43,7 @@ body {
         background-color: rgb(236 240 241 / 0.75);
         position: relative;
         z-index: 1;
+        padding-top: 10px;
     }
 
         .cuerpo-LogIn .log-in .seleccion-log-reg {
@@ -127,7 +128,7 @@ body {
     .input-zone input[type="text"], .input-zone input[type="password"] {
         width: 65%;
         border: none;
-        padding: 2px;
+        padding: 10px;
         border-radius: 0px 20px 20px 0px;
         height: 100%;
     }
@@ -160,10 +161,11 @@ body {
 .cuerpo-LogIn .log-in .data-inser-sect .datos-log button {
     border: none;
     width: 50%;
-    height: 25px;
-    border-radius: 5px;
+    height: 30px;
+    border-radius: 10px;
     background-color: rgb(255 250 250 / 0.60);
     color: #696969;
+    cursor: pointer;
 }
 
 .cuerpo-LogIn .log-in .data-inser-sect .datos-regist {
@@ -176,7 +178,7 @@ body {
     width: 15%;
     height: 90%;
     position: fixed;
-    background-color: #607AFF;
+    background-color: #1A2F9B;
 }
 
     .connected-nav ul {
@@ -231,15 +233,28 @@ body {
         font-family: 'Noto Sans JP', sans-serif;
         justify-content: center;
         align-items: center;
+        background-color: #6A82FF;
+        padding: 5px;
     }
 
         .message-body .input-message input[type="text"] {
-            width: 80%;
+            width: 70%;
             height: 70%;
             border: none;
             padding: 20px;
             font-size: 20px;
             border-radius: 5px 0px 0px 5px;
+        }
+
+        .message-body .input-message button {
+            width: 20%;
+            height: 70%;
+            border: none;
+            border-radius: 0px 5px 5px 0px;
+            cursor: pointer;
+            font-size: 15px;
+            background-color: #2a7c97;
+            color: snow;
         }
 /*            .connected-nav > ul > li::before {
                 content: " ";

@@ -4,6 +4,7 @@
 const connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
 // Obtenemos lo que queremos observar si muta
 const navbarCon = document.getElementById("lista-conectados");
+const seccionMensajes = document.querySelector(".message-body");
 //Reglas de observacion
 const observerOption = {
     attributes: true,
@@ -30,6 +31,16 @@ const ListCreation = (StringResult) => {
         listaCon.appendChild(li);
     });
 };
+const appendObject = async (response) => {
+    const textoPlano = await response.text();
+    const mostrar = document.querySelector(".message-body");
+    mostrar.innerHTML = "";
+    const div = document.createElement("div");
+    div.innerHTML = textoPlano;
+    div.childNodes.forEach((child) => {
+        mostrar.appendChild(child);
+    });
+};
 const FetchAPartialView = (idUser) => {
     const valor = JSON.stringify({
         "idUsuario": idUser
@@ -41,21 +52,24 @@ const FetchAPartialView = (idUser) => {
             body: valor,
             redirect: "follow"
         }
-    ).then(resposne => resposne.text()).then(result => {
-        const mostrar = document.querySelector(".message-body");
-        const div = document.createElement("div");
-        div.innerHTML = result;
-        div.childNodes.forEach((child) => {
-            mostrar.appendChild(child);
-        });
-    });
+    ).then(resposne => appendObject(resposne));
 };
 const agregarListener = (Node) => {
     Node.addEventListener("click", () => {
-        FetchAPartialView(Node.getAttribute("data-User"));
+        FetchAPartialView(Node.getAttribute("data-idChat"));
     });
 }
-
+const agregarListenerSendMesaje = (Node) => {
+    const form = Node.querySelector(".input-message");
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const message = Node.querySelector('input[type="text"]').value;
+        if (!(message === "")) {
+            const IdReceiver = Node.querySelector('input[type="hidden"]').value;
+            connection.invoke("EnviarMensaje", message, IdReceiver);
+        }
+    });
+}
 /********Objetos**********/
 // Creamos nuestro objeto observador
 const observer = new MutationObserver((mutationList) => {
@@ -64,6 +78,7 @@ const observer = new MutationObserver((mutationList) => {
         mutations.addedNodes.forEach((Node) => agregarListener(Node));
     });
 });
+const observadorDeMensajes = new MutationObserver(mutationList => agregarListenerSendMesaje(mutationList[0].target));
 /*********WebSockets**********/
 //Iniciamos la conexion al hub, para detener la conexion es el metodo stop(), si queremos saber que se desconecte "Aun no se"
 connection.start().then(() => {
@@ -72,6 +87,15 @@ connection.start().then(() => {
     //Iniciamos uso del patron observador, invokando a un metodo llamado "Usuario Conectado" con web sockets
     connection.invoke("UsuarioConectado", nombreDeUsuario);
 });
+/*******Recibimos el mensaje********/
 connection.on("RetornoDeConectados", (respuesta) => ListCreation(respuesta));
+connection.on("MensajeRecibido", (respuesta) => {
+    //const lista = document.querySelector(".lista-mensajes");
+    //const enlistado = document.createElement("li");
+    //enlistado.classList.add("respuesta-mensaje");
+    //enlistado.textContent = respuesta;
+    //lista.append(enlistado);
+})
 /**********Mutation events*********/
 observer.observe(navbarCon, observerOption)
+observadorDeMensajes.observe(seccionMensajes, observerOption);

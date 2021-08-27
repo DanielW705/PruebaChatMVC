@@ -39,5 +39,12 @@ namespace PruebaChatMVC.Hubs
             listaUsuarios.Remove(usuarioAEliminar);
             return base.OnDisconnectedAsync(exception);
         }
+        /***************Evento de Usuario envio mensaje****************/
+        public async Task EnviarMensaje(string message, string IdReceiver)
+        {
+            //await Clients.All.SendAsync("MensajeRecibido", message);
+            await Clients.Client(IdReceiver).SendAsync("MensajeRecibido", message);
+        }
+
     }
 }

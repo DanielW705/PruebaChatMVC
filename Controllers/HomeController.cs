@@ -12,7 +12,7 @@ namespace PruebaChatMVC.Controllers
     public class HomeController : Controller
     {
         /********Metodos o funciones*******/
-        public Guid limpiarGuid(string GuidCon)
+        public string limpiarGuid(string GuidCon)
         {
             /***Se guarda lo que es despues del :***/
             string GuidLimpiando = GuidCon.Split(":")[1];
@@ -29,7 +29,7 @@ namespace PruebaChatMVC.Controllers
 
             }
             /*******Hace el parseo**********/
-            return Guid.Parse(GuidLimipo);
+            return GuidLimipo;
         }
         /****Inyeccion de dependencias********/
         private readonly ILogger<HomeController> _logger;
@@ -58,7 +58,7 @@ namespace PruebaChatMVC.Controllers
         }
         public IActionResult MensajesChat([FromBody] object idUsuario)
         {
-            Guid GuidDelUsuario = limpiarGuid(idUsuario.ToString());
+            string GuidDelUsuario = limpiarGuid(idUsuario.ToString());
             return PartialView(model: GuidDelUsuario.ToString());
         }
     }
