@@ -56,10 +56,11 @@ namespace PruebaChatMVC.Controllers
                 return View("Privacy", usuario.UserName);
             }
         }
-        public IActionResult MensajesChat([FromBody] object idUsuario)
+        public IActionResult MensajesChat([FromBody] string idUsuario)
         {
-            string GuidDelUsuario = limpiarGuid(idUsuario.ToString());
-            return PartialView(model: GuidDelUsuario.ToString());
+            //string GuidDelUsuario = limpiarGuid(idUsuario.ToString());
+            //return PartialView(model: GuidDelUsuario.ToString());
+            return PartialView();
         }
     }
 }

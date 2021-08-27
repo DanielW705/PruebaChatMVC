@@ -14,6 +14,10 @@ body {
     width: 100%;
     height: 100px;
     background-color: #607AFF;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
 }
 
     .custom-nav h1 {
@@ -25,6 +29,15 @@ body {
         color: azure;
         font-size: 50px;
         font-family: 'Noto Sans JP', sans-serif;
+    }
+
+    .custom-nav select {
+        width: 200px;
+        height: 40px;
+        border-radius: 10px;
+        border: none;
+        background-color: snow;
+        padding: 10px;
     }
 
 .cuerpo-LogIn {
@@ -220,7 +233,7 @@ body {
 }
 
     .message-body .message-show {
-        width: 100%;
+        width: 99%;
         height: 90%;
         background-color: #ccbbbb82;
         border: 1.5px solid #060606;
@@ -255,6 +268,79 @@ body {
             font-size: 15px;
             background-color: #2a7c97;
             color: snow;
+        }
+    /***********Esto va en la seccion de lista de mensajes***********/
+    .message-body .message-show .lista-mensajes {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        list-style: none;
+        overflow: auto;
+    }
+
+        .message-body .message-show .lista-mensajes li {
+            border-radius: 20px;
+            display: flex;
+            margin: 10px;
+            width: 60%;
+            height: 40px;
+            max-height: 500px;
+            padding: 1.2%;
+            justify-content: space-around;
+            align-items: center;
+            position: relative;
+            color: aliceblue;
+            font-family: 'Noto Sans JP', sans-serif;
+        }
+
+            .message-body .message-show .lista-mensajes li .message-section {
+                width: 70%;
+            }
+
+            .message-body .message-show .lista-mensajes li .time-section {
+                width: 30%;
+                font-size: 10px;
+                height: 100%;
+                text-align: center;
+                padding: 12px 10px 0 0;
+            }
+
+        .message-body .message-show .lista-mensajes .message-recive {
+            flex-direction: row-reverse;
+            left: 40%;
+            background-color: #c792eb;
+        }
+
+        .message-body .message-show .lista-mensajes .message-send {
+            flex-direction: row;
+            background-color: #4996e1;
+        }
+
+            .message-body .message-show .lista-mensajes .message-send .message-section {
+                padding-left: 10px;
+                display: flex;
+                word-wrap: break-word;
+            }
+
+        .message-body .message-show .lista-mensajes .message-recive .message-section {
+            display: flex;
+            flex-direction: row-reverse;
+            padding-right: 10px;
+            word-wrap: break-word;
+        }
+
+            .message-body .message-show .lista-mensajes .message-recive .message-section span {
+                margin-left: 10px;
+                background-color: rgb(8 226 180 / 0.16);
+                border-radius: 0 20px 20px 0;
+                padding: 0 10px 0 10px;
+            }
+
+        .message-body .message-show .lista-mensajes .message-send .message-section span {
+            margin-right: 10px;
+            background-color: rgb(8 226 180 / 0.16);
+            border-radius: 20px 0 0 20px;
+            padding: 0 10px 0 10px;
         }
 /*            .connected-nav > ul > li::before {
                 content: " ";

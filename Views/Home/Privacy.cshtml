@@ -5,7 +5,14 @@
     </ul>
 </nav>
 <div class="message-body">
-
+    <div class="message-show">
+        <ul class="lista-mensajes">
+        </ul>
+    </div>
+    <form class="input-message">
+        <input type="text" placeholder="Escriba el mensaje a enviar" />
+        <button type="submit">Enviar mensaje</button>
+    </form>
 </div>
 <script type="text/javascript">
     const url = "@Url.Action("MensajesChat","Home")";
