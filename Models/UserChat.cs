@@ -10,6 +10,11 @@ namespace PruebaChatMVC.Models
         public Guid idUser { get; set; }
         public string UserName { get; set; }
         public string idChat { get; set; }
+        public User relChat_User { get; set; }
+        public UserChat()
+        {
+
+        }
         public UserChat(Guid _idUser, string _Username, string _idChat)
         {
             this.idUser = _idUser;

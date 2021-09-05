@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using PruebaChatMVC.Hubs;
+using PruebaChatMVC.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace PruebaChatMVC
 {
@@ -26,6 +28,8 @@ namespace PruebaChatMVC
         {
             services.AddControllersWithViews();
             services.AddSignalR();
+            const string conexion = @"Server=DESKTOP-H8G13PE;Database=ChatPrueba;Trusted_Connection=True;"; 
+            services.AddDbContext<Model>(options => options.UseSqlServer(conexion));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

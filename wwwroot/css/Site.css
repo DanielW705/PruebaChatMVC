@@ -49,14 +49,13 @@ body {
 }
 
     .cuerpo-LogIn .log-in {
-        width: 30%;
-        max-width: 400px;
-        height: 300px;
+        width: 300px;
+        height: 360px;
         border-radius: 20px;
         background-color: rgb(236 240 241 / 0.75);
         position: relative;
         z-index: 1;
-        padding-top: 10px;
+        padding-top: 20px;
     }
 
         .cuerpo-LogIn .log-in .seleccion-log-reg {
@@ -186,9 +185,20 @@ body {
 }
 /**************Private page*******************/
 
+.Text-title {
+    color: snow;
+    padding: 5px 0px 5px 15px;
+    font-family: 'Noto Sans JP', sans-serif;
+    position: sticky;
+    width: 140px;
+}
+
+    .Text-title p {
+        width: 12%;
+    }
 
 .connected-nav {
-    width: 15%;
+    width: 140px;
     height: 90%;
     position: fixed;
     background-color: #1A2F9B;
@@ -216,32 +226,51 @@ body {
             cursor: pointer;
             box-shadow: 7px 4px 8px #555454, 0px -4px 8px #6c6b6b;
             color: snow;
-            padding: 12%;
-            font-size: 16px;
+            padding: 15%;
+            font-size: 15px;
             word-break: break-all;
             margin-bottom: 1.5rem;
         }
 /*******Cuerpo del chat***/
 .message-body {
     position: fixed;
-    width: 85%;
+    width: 95%;
     height: 90%;
     background-color: rgb(236 240 241 / 0.30);
-    left: 15%;
+    top: 100px;
+    left: 140px;
     display: flex;
     flex-direction: column;
 }
 
     .message-body .message-show {
-        width: 99%;
+        width: 815px;
         height: 90%;
         background-color: #ccbbbb82;
         border: 1.5px solid #060606;
     }
 
+        .message-body .message-show .close {
+            clip-path: polygon(20% 0%, 0% 20%, 30% 50%, 0% 80%, 20% 100%, 50% 70%, 80% 100%, 100% 80%, 70% 50%, 100% 20%, 80% 0%, 50% 30%);
+            color: transparent;
+            background-color: red;
+            border: none;
+            cursor: pointer;
+            width: 20px;
+            height: 20px;
+            position: fixed;
+            right: 20px;
+            top: 110px;
+        }
+
+/*            .message-body .message-show .close:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            }*/
+
     .message-body .input-message {
         display: flex;
-        width: 100%;
+        width: 815px;
         height: 10%;
         font-family: 'Noto Sans JP', sans-serif;
         justify-content: center;
@@ -320,6 +349,7 @@ body {
                 padding-left: 10px;
                 display: flex;
                 word-wrap: break-word;
+                align-items: center;
             }
 
         .message-body .message-show .lista-mensajes .message-recive .message-section {
@@ -341,20 +371,19 @@ body {
             background-color: rgb(8 226 180 / 0.16);
             border-radius: 20px 0 0 20px;
             padding: 0 10px 0 10px;
+            max-height: 26px;
         }
-/*            .connected-nav > ul > li::before {
-                content: " ";
-                width: 10px;
-                background-color: green;
-                height: 10px;
-                display: block;
-                position: absolute;
-                border-radius: 20px;
-                top: 53px;
-                left: 72px;
-                box-shadow: ;
-            }*/
 
-/*            .connected-nav > ul > li:hover {
-                transform: scale(1.2);
-            }*/
+.connected-nav ul li .notificado-mensaje {
+    width: 20px;
+    background-color: red;
+    height: 20px;
+    position: absolute;
+    border-radius: 20px;
+    top: 20px;
+    left: 33px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+}

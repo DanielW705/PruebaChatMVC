@@ -1,18 +1,22 @@
-﻿@model string
-<input type="hidden" value="@Model" id="userName" />
+﻿@model User
+<div class="Text-title">
+<p>Buenos dias </p>
+<p id="userName">@Model.UserName</p>
+</div>
+<input type="hidden" value="@Model.id.ToString()" id="idUser"/>
 <nav class="connected-nav">
     <ul id="lista-conectados">
     </ul>
 </nav>
 <div class="message-body">
-    <div class="message-show">
+    <!--<div class="message-show">
         <ul class="lista-mensajes">
         </ul>
     </div>
     <form class="input-message">
         <input type="text" placeholder="Escriba el mensaje a enviar" />
         <button type="submit">Enviar mensaje</button>
-    </form>
+    </form>-->
 </div>
 <script type="text/javascript">
     const url = "@Url.Action("MensajesChat","Home")";
