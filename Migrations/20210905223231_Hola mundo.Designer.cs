@@ -10,8 +10,8 @@ using PruebaChatMVC.Models;
 namespace PruebaChatMVC.Migrations
 {
     [DbContext(typeof(Model))]
-    [Migration("20210905045432_Migracion-Ultima")]
-    partial class MigracionUltima
+    [Migration("20210905223231_Hola mundo")]
+    partial class Holamundo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,6 +20,33 @@ namespace PruebaChatMVC.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.9")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("PruebaChatMVC.Models.MessageSended", b =>
+                {
+                    b.Property<Guid>("idMensaje")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("FechaDeEnvio")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Mensjae")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("Reciber")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Sender")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("idMensaje");
+
+                    b.HasIndex("Reciber");
+
+                    b.HasIndex("Sender");
+
+                    b.ToTable("MensajesEnviados");
+                });
 
             modelBuilder.Entity("PruebaChatMVC.Models.User", b =>
                 {
@@ -44,7 +71,7 @@ namespace PruebaChatMVC.Migrations
                     b.HasData(
                         new
                         {
-                            id = new Guid("cc63eea7-2d0f-4508-93d5-7673d8a2bccc"),
+                            id = new Guid("4d5c3e8d-68a2-480f-80ef-a21bb46a2105"),
                             Pasword = "123",
                             UserName = "Daniel"
                         });
@@ -66,6 +93,27 @@ namespace PruebaChatMVC.Migrations
                     b.ToTable("UsuarioChat");
                 });
 
+            modelBuilder.Entity("PruebaChatMVC.Models.MessageSended", b =>
+                {
+                    b.HasOne("PruebaChatMVC.Models.User", "relReciver_User")
+                        .WithMany("relUser_Reciber")
+                        .HasForeignKey("Reciber")
+                        .HasConstraintName("Relacion_Usuario_Receptor")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("PruebaChatMVC.Models.User", "relSender_User")
+                        .WithMany("relUser_Sender")
+                        .HasForeignKey("Sender")
+                        .HasConstraintName("Relacion_Usuario_Emisor")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("relReciver_User");
+
+                    b.Navigation("relSender_User");
+                });
+
             modelBuilder.Entity("PruebaChatMVC.Models.UserChat", b =>
                 {
                     b.HasOne("PruebaChatMVC.Models.User", "relChat_User")
@@ -81,6 +129,10 @@ namespace PruebaChatMVC.Migrations
             modelBuilder.Entity("PruebaChatMVC.Models.User", b =>
                 {
                     b.Navigation("relChat_User");
+
+                    b.Navigation("relUser_Reciber");
+
+                    b.Navigation("relUser_Sender");
                 });
 #pragma warning restore 612, 618
         }

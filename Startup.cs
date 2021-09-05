@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using PruebaChatMVC.Hubs;
 using PruebaChatMVC.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.SqlServer;
 
 namespace PruebaChatMVC
 {

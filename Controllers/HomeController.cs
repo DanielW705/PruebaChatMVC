@@ -14,9 +14,11 @@ namespace PruebaChatMVC.Controllers
         /********Metodos o funciones*******/
         /****Inyeccion de dependencias********/
         private readonly ILogger<HomeController> _logger;
+        private readonly Model DbModel;
         /*********Construtor**********/
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, Model _DbModel)
         {
+            DbModel = _DbModel;
             _logger = logger;
         }
         /*********Nodos************/
@@ -28,15 +30,21 @@ namespace PruebaChatMVC.Controllers
         [HttpPost]
         public IActionResult Index(User usuario)
         {
-            usuario.id = Guid.NewGuid();
-            if (!ModelState.IsValid)
+            
+            if (!ModelState.IsValid )
             {
-                return View();
+                return View(usuario);
+            }
+            else if (!DbModel.Usuario.Where(d => d.UserName == usuario.UserName && d.Pasword == usuario.Pasword).Any())
+            {
+                ModelState.AddModelError("UserNotExist","El Usuario no existe");
+                return View(usuario);
             }
             else
             {
                 return View("Privacy", model: usuario);
             }
+
         }
         public IActionResult MensajesChat([FromBody] string idUsuario)
         {

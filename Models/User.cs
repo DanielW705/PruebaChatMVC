@@ -19,6 +19,8 @@ namespace PruebaChatMVC.Models
         [StringLength(3, ErrorMessage = "Debe ser menos de 3 caracteres")]
         public string Pasword { get => pasword; set => pasword = value; }
         public UserChat relChat_User { get; set; }
+        public ICollection<MessageSended> relUser_Sender { get; set; }
+        public ICollection<MessageSended> relUser_Reciber { get; set; }
         public User()
         {
         }

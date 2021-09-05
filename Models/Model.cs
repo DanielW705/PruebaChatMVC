@@ -24,6 +24,16 @@ namespace PruebaChatMVC.Models
                 .HasForeignKey<User>(f => f.id)
                 .HasConstraintName("Relacion_Usuario_Chat")
                 .OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(a => a.relUser_Reciber)
+                .WithOne(b => b.relReciver_User)
+                .HasForeignKey(d => d.Reciber)
+                .HasConstraintName("Relacion_Usuario_Receptor")
+                .OnDelete(DeleteBehavior.Restrict);
+                entity.HasMany(a => a.relUser_Sender)
+                .WithOne(b => b.relSender_User)
+                .HasForeignKey(d => d.Sender)
+                .HasConstraintName("Relacion_Usuario_Emisor")
+                .OnDelete(DeleteBehavior.Restrict);
                 entity.HasData(new User { id = Guid.NewGuid(), Pasword = "123", UserName = "Daniel" });
             });
             modelBuilder.Entity<UserChat>(entity =>
@@ -35,10 +45,15 @@ namespace PruebaChatMVC.Models
                 .OnDelete(DeleteBehavior.Restrict);
             });
 
-
+            modelBuilder.Entity<MessageSended>(entity =>
+            {
+                entity.HasKey(d => d.idMensaje);
+            });
         }
         public DbSet<User> Usuario { get; set; }
         public DbSet<UserChat> UsuarioChat { get; set; }
+
+        public DbSet<MessageSended> MensajesEnviados { get; set; }
 
     }
 }
