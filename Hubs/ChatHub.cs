@@ -10,9 +10,14 @@ namespace PruebaChatMVC.Hubs
 {
     public class ChatHub : Hub
     {
+        private readonly Model DBModel;
         /*********Lista de donde se guardan los usuarios conectados*************/
         static List<UserChat> listaUsuarios = new List<UserChat>();
         /***********Evento cuando se conecta el usuario***************/
+        public ChatHub(Model _DBModel)
+        {
+            DBModel = _DBModel;
+        }
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
@@ -20,6 +25,8 @@ namespace PruebaChatMVC.Hubs
         /**************Evento de usuario conectado, para mandarlo a todos********************/
         public async Task UsuarioConectado(string id,string nombre)
         {
+            DBModel.UsuarioChat.Add(new UserChat { idUser = Guid.Parse(id), idChat = Context.ConnectionId, UserName = nombre });
+            DBModel.SaveChanges();
             listaUsuarios.Add(new UserChat(Guid.Parse(id), nombre, Context.ConnectionId));
             string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
             await Clients.All.SendAsync("RetornoDeConectados", lista);
@@ -35,6 +42,8 @@ namespace PruebaChatMVC.Hubs
             UserChat usuarioAEliminar = (from usurio in listaUsuarios
                                          where usurio.idChat == Context.ConnectionId
                                          select usurio).First();
+            DBModel.UsuarioChat.Remove(usuarioAEliminar);
+            DBModel.SaveChanges();
             listaUsuarios.Remove(usuarioAEliminar);
             string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
             await Clients.All.SendAsync("RetornoDeConectados", lista);
@@ -43,7 +52,6 @@ namespace PruebaChatMVC.Hubs
         /***************Evento de Usuario envio mensaje****************/
         public async Task EnviarMensaje(string message, string IdReceiver, string date)
         {
-            //await Clients.All.SendAsync("MensajeRecibido", message);
             string idMio = Context.ConnectionId;
             string Sender = (from usuario in listaUsuarios
                              where usuario.idChat == Context.ConnectionId

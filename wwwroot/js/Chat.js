@@ -46,12 +46,15 @@ const appendObject = async (response) => {
         mostrar.appendChild(child);
     });
 };
-const FetchAPartialView = (idUser) => {
-    const value = JSON.stringify(idUser);
+const FetchAPartialView = (idChat, idReciber) => {
+    const value = JSON.stringify(idChat);
+    console.log(value);
+    const value2 = JSON.stringify(idReciber);
+    console.log(idReciber);
     fetch(url,
         {
             method: "POST",
-            headers: guardarHeaders(),
+                        headers: guardarHeaders(),
             body: value,
             redirect: "follow"
         }
@@ -162,7 +165,7 @@ const observadorDeMensajes = new MutationObserver(mutationList => agregarListene
 /*********WebSockets**********/
 //Iniciamos la conexion al hub, para detener la conexion es el metodo stop(), si queremos saber que se desconecte "Aun no se"
 connection.start().then(() => {
-    console.clear();
+    //console.clear();
     //Obtenemos el nombre de usuario
     const nombreDeUsuario = document.getElementById("userName").textContent;
     const idUsuario = document.getElementById("idUser").value;

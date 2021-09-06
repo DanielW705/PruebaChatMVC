@@ -30,25 +30,25 @@ namespace PruebaChatMVC.Controllers
         [HttpPost]
         public IActionResult Index(User usuario)
         {
-            
-            if (!ModelState.IsValid )
+
+            if (!ModelState.IsValid)
             {
                 return View(usuario);
             }
             else if (!DbModel.Usuario.Where(d => d.UserName == usuario.UserName && d.Pasword == usuario.Pasword).Any())
             {
-                ModelState.AddModelError("UserNotExist","El Usuario no existe");
+                ModelState.AddModelError("UserNotExist", "El Usuario no existe");
                 return View(usuario);
             }
             else
             {
+                usuario = DbModel.Usuario.Where(d => d.UserName == usuario.UserName && d.Pasword == usuario.Pasword).First();
                 return View("Privacy", model: usuario);
             }
-
         }
-        public IActionResult MensajesChat([FromBody] string idUsuario)
+        public IActionResult MensajesChat([FromBody] string idChat, [FromBody] string idReciber)
         {
-            return PartialView(model: idUsuario);
+            return PartialView(model: idChat);
         }
     }
 }

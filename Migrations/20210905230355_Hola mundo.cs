@@ -25,8 +25,9 @@ namespace PruebaChatMVC.Migrations
                 columns: table => new
                 {
                     idMensaje = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Mensjae = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Mensaje = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     FechaDeEnvio = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    visto = table.Column<bool>(type: "bit", nullable: false),
                     Sender = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Reciber = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
                 },
@@ -69,7 +70,12 @@ namespace PruebaChatMVC.Migrations
             migrationBuilder.InsertData(
                 table: "Usuario",
                 columns: new[] { "id", "Pasword", "UserName" },
-                values: new object[] { new Guid("4d5c3e8d-68a2-480f-80ef-a21bb46a2105"), "123", "Daniel" });
+                values: new object[] { new Guid("f6b08cf8-c019-4c20-ac61-f192ba74ea4e"), "123", "Daniel" });
+
+            migrationBuilder.InsertData(
+                table: "Usuario",
+                columns: new[] { "id", "Pasword", "UserName" },
+                values: new object[] { new Guid("11a4fb66-0e11-4717-95dc-58f8cbc0471c"), "456", "Julio" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_MensajesEnviados_Reciber",

@@ -10,7 +10,7 @@ using PruebaChatMVC.Models;
 namespace PruebaChatMVC.Migrations
 {
     [DbContext(typeof(Model))]
-    [Migration("20210905223231_Hola mundo")]
+    [Migration("20210905230355_Hola mundo")]
     partial class Holamundo
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -30,7 +30,7 @@ namespace PruebaChatMVC.Migrations
                     b.Property<DateTime>("FechaDeEnvio")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("Mensjae")
+                    b.Property<string>("Mensaje")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("Reciber")
@@ -38,6 +38,9 @@ namespace PruebaChatMVC.Migrations
 
                     b.Property<Guid>("Sender")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("visto")
+                        .HasColumnType("bit");
 
                     b.HasKey("idMensaje");
 
@@ -71,9 +74,15 @@ namespace PruebaChatMVC.Migrations
                     b.HasData(
                         new
                         {
-                            id = new Guid("4d5c3e8d-68a2-480f-80ef-a21bb46a2105"),
+                            id = new Guid("f6b08cf8-c019-4c20-ac61-f192ba74ea4e"),
                             Pasword = "123",
                             UserName = "Daniel"
+                        },
+                        new
+                        {
+                            id = new Guid("11a4fb66-0e11-4717-95dc-58f8cbc0471c"),
+                            Pasword = "456",
+                            UserName = "Julio"
                         });
                 });
 

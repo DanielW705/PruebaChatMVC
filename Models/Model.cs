@@ -34,7 +34,9 @@ namespace PruebaChatMVC.Models
                 .HasForeignKey(d => d.Sender)
                 .HasConstraintName("Relacion_Usuario_Emisor")
                 .OnDelete(DeleteBehavior.Restrict);
-                entity.HasData(new User { id = Guid.NewGuid(), Pasword = "123", UserName = "Daniel" });
+                entity.HasData(
+                    new User { id = Guid.NewGuid(), Pasword = "123", UserName = "Daniel" },
+                    new User { id = Guid.NewGuid(), Pasword = "456", UserName = "Julio" });
             });
             modelBuilder.Entity<UserChat>(entity =>
             {
