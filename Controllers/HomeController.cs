@@ -49,9 +49,9 @@ namespace PruebaChatMVC.Controllers
         public IActionResult MensajesChat([FromForm] string idChat, [FromForm] string idReciber, [FromForm] string idSender)
         {
             List<MessageSended> mensajesEnviados = DbModel.MensajesEnviados.Where(
-                d => d.Sender == Guid.Parse(idSender) && d.Reciber == Guid.Parse(idReciber)
-                || d.Reciber == Guid.Parse(idSender) && d.Sender == Guid.Parse(idReciber)
-                ).Take(10).ToList();
+                d => (d.Sender == Guid.Parse(idSender) || d.Reciber == Guid.Parse(idSender)) &&
+                (d.Reciber == Guid.Parse(idReciber) || d.Sender == Guid.Parse(idReciber)))
+                .Take(10).OrderBy(d => d.FechaDeEnvio).ToList();
             return PartialView(model: (idChat, mensajesEnviados, idSender));
         }
     }

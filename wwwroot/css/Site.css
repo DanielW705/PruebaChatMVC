@@ -248,6 +248,8 @@ body {
         height: 90%;
         background-color: #ccbbbb82;
         border: 1.5px solid #060606;
+        position: sticky;
+        overflow: auto;
     }
 
         .message-body .message-show .close {
@@ -263,7 +265,7 @@ body {
             top: 110px;
         }
 
-/*            .message-body .message-show .close:hover {
+    /*            .message-body .message-show .close:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
             }*/
@@ -300,7 +302,7 @@ body {
         }
     /***********Esto va en la seccion de lista de mensajes***********/
     .message-body .message-show .lista-mensajes {
-        padding: 20px;
+        padding: 35px;
         display: flex;
         flex-direction: column;
         list-style: none;
