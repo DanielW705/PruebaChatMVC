@@ -37,6 +37,9 @@ namespace PruebaChatMVC.Migrations
                     b.Property<Guid>("Sender")
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<string>("nameSender")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("visto")
                         .HasColumnType("bit");
 
@@ -72,13 +75,13 @@ namespace PruebaChatMVC.Migrations
                     b.HasData(
                         new
                         {
-                            id = new Guid("f6b08cf8-c019-4c20-ac61-f192ba74ea4e"),
+                            id = new Guid("aa794625-afcd-4b73-b109-6a9cbda775d7"),
                             Pasword = "123",
                             UserName = "Daniel"
                         },
                         new
                         {
-                            id = new Guid("11a4fb66-0e11-4717-95dc-58f8cbc0471c"),
+                            id = new Guid("81ea2a69-193a-4e91-b11d-c3ca68e77792"),
                             Pasword = "456",
                             UserName = "Julio"
                         });

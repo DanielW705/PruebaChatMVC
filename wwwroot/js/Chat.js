@@ -15,8 +15,7 @@ const observerOption = {
 };
 const guardarHeaders = () => {
     let headers = new Headers()
-    headers.append("Accept", "application/json");
-    headers.append("Content-Type", "application/json");
+    headers.append("Content-Type", "multipart/form-data");
     return headers;
 }
 /*******Metodos o funciones*******/
@@ -46,29 +45,34 @@ const appendObject = async (response) => {
         mostrar.appendChild(child);
     });
 };
-const FetchAPartialView = (idChat, idReciber) => {
-    const value = JSON.stringify(idChat);
-    console.log(value);
-    const value2 = JSON.stringify(idReciber);
-    console.log(idReciber);
+const values = (idChat, idReciber, idSender) => {
+    const Datos = new FormData();
+    Datos.append("idChat", idChat);
+    Datos.append("idReciber", idReciber);
+    Datos.append("idSender", idSender);
+    return Datos;
+}
+const FetchAPartialView = (idChat, idReciber, idSender) => {
     fetch(url,
         {
             method: "POST",
-                        headers: guardarHeaders(),
-            body: value,
+            //headers: guardarHeaders(),
+            body: values(idChat, idReciber, idSender),
             redirect: "follow"
         }
     ).then(resposne => appendObject(resposne));
 };
 const agregarListener = (Node) => {
     Node.addEventListener("click", () => {
+        const idReciber = Node.getAttribute("data-User");
+        const idSender = document.getElementById("idUser").value;
         const idChat = Node.getAttribute("data-idChat");
         const bublee = Node.querySelector(".notificado-mensaje");
         if (bublee !== null) {
             Node.removeChild(bublee);
             connection.on("VistoRealizado", idChat)
         }
-        FetchAPartialView(idChat);
+        FetchAPartialView(idChat, idReciber, idSender);
     });
 }
 const limpiar = (select) => {

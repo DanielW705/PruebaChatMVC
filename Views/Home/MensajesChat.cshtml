@@ -1,8 +1,35 @@
-﻿@model string;
-<input type="hidden" value="@Model" />
+﻿@model (string, List<MessageSended>, string);
+<input type="hidden" value="@Model.Item1" />
 <div class="message-show">
     <button class="close">&times;</button>
     <ul class="lista-mensajes">
+        @foreach (MessageSended message in Model.Item2)
+        {
+            if (Guid.Parse(Model.Item3) == message.Sender)
+            {
+                <li class="message-send">
+                    <div class="message-section">
+                        <span>@message.nameSender</span>
+                        @message.Mensaje
+                    </div>
+                    <div class="time-section">
+                        @message.FechaDeEnvio.ToString();
+                    </div>
+                </li>
+            }
+            else
+            {
+                <li class="message-recive">
+                    <div class="message-section">
+                        <span>@message.nameSender</span>
+                        @message.Mensaje
+                    </div>
+                    <div class="time-section">
+                        @message.FechaDeEnvio.ToString();
+                    </div>
+                </li>
+            }
+        }
     </ul>
 </div>
 <form class="input-message">

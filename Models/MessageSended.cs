@@ -8,6 +8,7 @@ namespace PruebaChatMVC.Models
     public class MessageSended
     {
         public Guid idMensaje { get; set; }
+        public string nameSender { get; set; }
         public string Mensaje { get; set; }
         public DateTime FechaDeEnvio { get; set; }
         public bool visto { get; set; }

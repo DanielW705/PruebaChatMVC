@@ -23,12 +23,12 @@ namespace PruebaChatMVC.Hubs
             return base.OnConnectedAsync();
         }
         /**************Evento de usuario conectado, para mandarlo a todos********************/
-        public async Task UsuarioConectado(string id,string nombre)
+        public async Task UsuarioConectado(string id, string nombre)
         {
-            DBModel.UsuarioChat.Add(new UserChat { idUser = Guid.Parse(id), idChat = Context.ConnectionId, UserName = nombre });
-            DBModel.SaveChanges();
             listaUsuarios.Add(new UserChat(Guid.Parse(id), nombre, Context.ConnectionId));
             string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
+            DBModel.UsuarioChat.Add(new UserChat { idUser = Guid.Parse(id), idChat = Context.ConnectionId, UserName = nombre });
+            DBModel.SaveChanges();
             await Clients.All.SendAsync("RetornoDeConectados", lista);
         }
         /****************Desconexion de todos los usuarios********************/
@@ -42,10 +42,10 @@ namespace PruebaChatMVC.Hubs
             UserChat usuarioAEliminar = (from usurio in listaUsuarios
                                          where usurio.idChat == Context.ConnectionId
                                          select usurio).First();
+            string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
             DBModel.UsuarioChat.Remove(usuarioAEliminar);
             DBModel.SaveChanges();
             listaUsuarios.Remove(usuarioAEliminar);
-            string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
             await Clients.All.SendAsync("RetornoDeConectados", lista);
             await base.OnDisconnectedAsync(exception);
         }
@@ -56,6 +56,23 @@ namespace PruebaChatMVC.Hubs
             string Sender = (from usuario in listaUsuarios
                              where usuario.idChat == Context.ConnectionId
                              select usuario.UserName).First();
+            Guid idSender = (from usuario in listaUsuarios
+                             where usuario.idChat == idMio
+                             select usuario.idUser).First();
+            Guid idReciber = (from usuario in listaUsuarios
+                              where usuario.idChat == IdReceiver
+                              select usuario.idUser).First();
+            DBModel.MensajesEnviados.Add(new MessageSended
+            {
+                idMensaje = Guid.NewGuid(),
+                nameSender = Sender,
+                Mensaje = message,
+                FechaDeEnvio = DateTime.Parse(date),
+                Sender = idSender,
+                Reciber = idReciber,
+                visto = false
+            });
+            DBModel.SaveChanges();
             await Clients.Client(idMio).SendAsync("MensajeMio", message, date, Sender);
             await Clients.Client(IdReceiver).SendAsync("MensajeRecibido", message, date, Sender, idMio);
         }
