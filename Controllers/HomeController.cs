@@ -46,13 +46,12 @@ namespace PruebaChatMVC.Controllers
                 return View("Privacy", model: usuario);
             }
         }
-        public IActionResult MensajesChat([FromForm] string idChat, [FromForm] string idReciber, [FromForm] string idSender)
+        public IActionResult MensajesChat([FromForm] string idChat, [FromForm] string idMio, [FromForm] string idEl)
         {
-            List<MessageSended> mensajesEnviados = DbModel.MensajesEnviados.Where(
-                d => (d.Sender == Guid.Parse(idSender) || d.Reciber == Guid.Parse(idSender)) &&
-                (d.Reciber == Guid.Parse(idReciber) || d.Sender == Guid.Parse(idReciber)))
-                .Take(10).OrderBy(d => d.FechaDeEnvio).ToList();
-            return PartialView(model: (idChat, mensajesEnviados, idSender));
+            List<MessageSended> mensajesEnviados = DbModel.MensajesEnviados
+                .Where(d => (d.Reciber == Guid.Parse(idMio) && d.Sender == Guid.Parse(idEl)) || 
+                (d.Reciber == Guid.Parse(idEl) && d.Sender == Guid.Parse(idMio))).OrderBy(d=> d.FechaDeEnvio).ToList();
+            return PartialView(model: (idChat, mensajesEnviados, idMio));
         }
     }
 }

@@ -5,7 +5,7 @@
     <ul class="lista-mensajes">
         @foreach (MessageSended message in Model.Item2)
         {
-            if (Guid.Parse(Model.Item3) == message.Sender)
+            if (Guid.Parse(Model.Item3) == message.Reciber)
             {
                 <li class="message-send">
                     <div class="message-section">

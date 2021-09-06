@@ -45,34 +45,34 @@ const appendObject = async (response) => {
         mostrar.appendChild(child);
     });
 };
-const values = (idChat, idReciber, idSender) => {
+const values = (idChat, idMio, idEl) => {
     const Datos = new FormData();
     Datos.append("idChat", idChat);
-    Datos.append("idReciber", idReciber);
-    Datos.append("idSender", idSender);
+    Datos.append("idMio", idMio);
+    Datos.append("idEl", idEl);
     return Datos;
 }
-const FetchAPartialView = (idChat, idReciber, idSender) => {
+const FetchAPartialView = (idChat, idMio, idEl) => {
     fetch(url,
         {
             method: "POST",
             //headers: guardarHeaders(),
-            body: values(idChat, idReciber, idSender),
+            body: values(idChat, idMio, idEl),
             redirect: "follow"
         }
     ).then(resposne => appendObject(resposne));
 };
 const agregarListener = (Node) => {
     Node.addEventListener("click", () => {
-        const idReciber = Node.getAttribute("data-User");
-        const idSender = document.getElementById("idUser").value;
+        const idMio = Node.getAttribute("data-User");
+        const idEl = document.getElementById("idUser").value;
         const idChat = Node.getAttribute("data-idChat");
         const bublee = Node.querySelector(".notificado-mensaje");
         if (bublee !== null) {
             Node.removeChild(bublee);
             connection.on("VistoRealizado", idChat)
         }
-        FetchAPartialView(idChat, idReciber, idSender);
+        FetchAPartialView(idChat, idMio, idEl);
     });
 }
 const limpiar = (select) => {

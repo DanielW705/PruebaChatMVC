@@ -62,7 +62,7 @@ namespace PruebaChatMVC.Hubs
             Guid idReciber = (from usuario in listaUsuarios
                               where usuario.idChat == IdReceiver
                               select usuario.idUser).First();
-            DBModel.MensajesEnviados.Add(new MessageSended
+            await DBModel.MensajesEnviados.AddAsync(new MessageSended
             {
                 idMensaje = Guid.NewGuid(),
                 nameSender = Sender,
