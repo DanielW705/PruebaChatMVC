@@ -1,4 +1,5 @@
-﻿@model PruebaChatMVC.Models.User
+﻿@using PruebaChatMVC.Models
+@model User
 <div class="cuerpo-LogIn">
     <div class="log-in">
         <div class="seleccion-log-reg">
@@ -19,9 +20,9 @@
                 <span class="errorSpan" asp-validation-for="UserName"></span>
                 <div class="input-zone">
                     <span class="title">Contraseña:</span>
-                    <input type="password" value="" placeholder="Contraseña" name="Pasword" asp-for="Pasword" />
+                    <input type="password" value="" placeholder="Contraseña" name="Pasword" asp-for="pasword" />
                 </div>
-                <span class="errorSpan" asp-validation-for="Pasword"></span>
+                <span class="errorSpan" asp-validation-for="pasword"></span>
                 <button type="submit">Ingresar</button>
             </form>
             <form method="post" class="datos-regist">

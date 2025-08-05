@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using PruebaChatMVC.Data;
 using PruebaChatMVC.Models;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,9 @@ namespace PruebaChatMVC.Controllers
         /********Metodos o funciones*******/
         /****Inyeccion de dependencias********/
         private readonly ILogger<HomeController> _logger;
-        private readonly Model DbModel;
+        private readonly ChatPruebaDbContext DbModel;
         /*********Construtor**********/
-        public HomeController(ILogger<HomeController> logger, Model _DbModel)
+        public HomeController(ILogger<HomeController> logger, ChatPruebaDbContext _DbModel)
         {
             DbModel = _DbModel;
             _logger = logger;
@@ -31,24 +32,24 @@ namespace PruebaChatMVC.Controllers
         public IActionResult Index(User usuario)
         {
 
-            if (!ModelState.IsValid)
-            {
-                return View(usuario);
-            }
-            else if (!DbModel.Usuario.Where(d => d.UserName == usuario.UserName && d.Pasword == usuario.Pasword).Any())
-            {
-                ModelState.AddModelError("UserNotExist", "El Usuario no existe");
-                return View(usuario);
-            }
-            else
-            {
-                usuario = DbModel.Usuario.Where(d => d.UserName == usuario.UserName && d.Pasword == usuario.Pasword).First();
-                return View("Privacy", model: usuario);
-            }
+                return View();
+            //if (!ModelState.IsValid)
+            //{
+            //}
+            //else if (!DbModel.Usuario.Where(d => d.UserName == usuario.UserName && d.Pasword == usuario.Pasword).Any())
+            //{
+            //    ModelState.AddModelError("UserNotExist", "El Usuario no existe");
+            //    return View(usuario);
+            //}
+            //else
+            //{
+            //    usuario = DbModel.Usuario.Where(d => d.UserName == usuario.UserName && d.Pasword == usuario.Pasword).First();
+            //    return View("Privacy", model: usuario);
+            //}
         }
         public IActionResult MensajesChat([FromForm] string idChat, [FromForm] string idReciber, [FromForm] string idSender)
         {
-            List<MessageSended> mensajesEnviados = DbModel.MensajesEnviados.Where(
+            List<Messages> mensajesEnviados = DbModel.MensajesEnviados.Where(
                 d => (d.Sender == Guid.Parse(idSender) || d.Reciber == Guid.Parse(idSender)) &&
                 (d.Reciber == Guid.Parse(idReciber) || d.Sender == Guid.Parse(idReciber)))
                 .Take(10).OrderBy(d => d.FechaDeEnvio).ToList();

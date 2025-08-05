@@ -1,17 +1,13 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using PruebaChatMVC.Hubs;
-using PruebaChatMVC.Models;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.SqlServer;
+using Microsoft.Extensions.Logging;
+using PruebaChatMVC.LoggerProvider;
+using PruebaChatMVC.Data;
 
 namespace PruebaChatMVC
 {
@@ -28,14 +24,20 @@ namespace PruebaChatMVC
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
+
             services.AddSignalR();
-            const string conexion = @"Server=DESKTOP-H8G13PE;Database=ChatPrueba;Trusted_Connection=True;"; 
-            services.AddDbContext<Model>(options => options.UseSqlServer(conexion));
+
+            string conexion = Configuration.GetConnectionString("ChatPruebaConnectionString");
+
+            services.AddDbContext<ChatPruebaDbContext>(options => options.UseSqlServer(conexion));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerfactory)
         {
+
+            loggerfactory.AddProvider(new FileLoggerProvider("apps.logs"));
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -59,7 +61,7 @@ namespace PruebaChatMVC
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<ChatHub>("/chatHub");
-                
+
             });
         }
     }
