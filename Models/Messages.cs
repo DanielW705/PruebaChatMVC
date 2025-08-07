@@ -5,19 +5,14 @@ namespace PruebaChatMVC.Models
 {
     public class Messages : SoftDelete
     {
-        public Guid idMensaje { get; set; }
-        public string nameSender { get; set; }
-        public string Mensaje { get; set; }
-        public DateTime FechaDeEnvio { get; set; }
+        public Guid idMessage { get; set; }
+        public string Message { get; set; }
+        public Guid IdUserSender { get; set; }
+        public Guid IdChatSended { get; set; }
+        public DateTime SendTime { get; set; }
         public bool visto { get; set; }
-        public Guid Sender { get; set; }
-        public Guid Reciber { get; set; }
-        public User relSender_User { get; set; }
-        public User relReciver_User { get; set; }
-
-        public int IdChatSended { get; set; }
-
-        public UserChat relMensaje_Chat { get; set; }
+        public Users UserSended { get; set; }
+        public Chats ChatSended { get; set; }
 
     }
 }

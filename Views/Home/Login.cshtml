@@ -1,0 +1,20 @@
+﻿@using PruebaChatMVC.ViewModel
+@model LoginRegisterUserViewModel
+<section>
+    <form asp-action="Login" asp-controller="Home" method="post">
+        <h2>Iniciar Sesion</h2>
+        <div>
+            <label asp-for="@Model.UserName">Usuario: </label>
+            <input type="text" asp-for="@Model.UserName" placeholder="Ingrese Usuario" />
+        </div>
+        <div>
+            <label asp-for="@Model.Pasword">Contraseña: </label>
+            <input type="text" asp-for="@Model.Pasword" placeholder="Ingrese Contraseña" />
+        </div>
+        <div asp-validation-summary="ModelOnly"></div>
+        <div>
+            <a asp-action="Register" asp-controller="Home">Registrar nuevo usuario</a>
+            <button type="submit">Ingresar</button>
+        </div>
+    </form>
+</section>

@@ -1,23 +1,19 @@
 ﻿using PruebaChatMVC.Models;
 using System;
-using System.Collections.Generic;
-
+using PruebaChatMVC.Enums;
 namespace PruebaChatMVC.Seeders
 {
-    public class ChatSeeder : ISeeder<UserChat[], User[]>
+    public class ChatSeeder : ISeeder<Chats>
     {
-        public UserChat[] ApplySeed(User[] users)
+        public Chats ApplySeed()
         {
-            List<UserChat> output = new List<UserChat>();
-            for (int i = 0; i < users.Length; i++)
+            return new Chats()
             {
-                for (int j = i + 1; j < users.Length; j++)
-                {
-                    output.Add(new UserChat { IdChat = i + 1, idUser1 = users[i].id, idUser2 = users[j].id });
-                }
-            }
-
-            return output.ToArray();
+                IdChat = Guid.Parse("d7917cfe-0e42-4f57-b237-8a44ae5d3d20"),
+                ChatName = "Chat de Daniel y Julio",
+                ChatDescription = null,
+                TypeOfChat = TypeOfChat.Individual
+            };
         }
     }
 }

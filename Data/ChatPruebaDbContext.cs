@@ -9,9 +9,9 @@ namespace PruebaChatMVC.Data
     {
         private readonly UserSeeder _userSeeder = new UserSeeder();
         private readonly ChatSeeder _chatSeeder = new ChatSeeder();
-
-        public DbSet<User> Usuario { get; set; }
-        public DbSet<UserChat> UsuarioChat { get; set; }
+        private readonly ParticipantsSeeder _participantsSeeder = new ParticipantsSeeder();
+        public DbSet<Users> Usuario { get; set; }
+        public DbSet<Chats> Chats { get; set; }
 
         public DbSet<Messages> MensajesEnviados { get; set; }
         public ChatPruebaDbContext(DbContextOptions<ChatPruebaDbContext> options) : base(options)
@@ -25,12 +25,14 @@ namespace PruebaChatMVC.Data
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            User[] users = _userSeeder.ApplySeed();
+            Users[] users = _userSeeder.ApplySeed();
 
-            UserChat[] chats = _chatSeeder.ApplySeed(users);
-            modelBuilder.Entity<User>(entity =>
+            Chats chats = _chatSeeder.ApplySeed();
+
+            Participants[] participants = _participantsSeeder.ApplySeed(users, chats);
+            modelBuilder.Entity<Users>(entity =>
             {
-                entity.HasKey(d => d.id);
+                entity.HasKey(d => d.IdUser);
                 entity.Property(p => p.UserName)
                 .IsRequired();
                 entity.Property(p => p.pasword)
@@ -40,26 +42,26 @@ namespace PruebaChatMVC.Data
                 entity.Property(u => u.Created)
                 .IsRequired();
                 entity.HasQueryFilter(u => !u.isDelete);
+                entity.Property(uc => uc.isDelete)
+                      .IsRequired()
+                      .HasDefaultValue(false);
+
+                entity.Property(uc => uc.Created)
+                       .HasDefaultValueSql("getdate()");
                 entity.HasData(users);
             });
-            modelBuilder.Entity<UserChat>(entity =>
+
+            modelBuilder.Entity<Chats>(entity =>
             {
-                entity.HasKey(d => d.IdChat);
-                entity.Property(c => c.IdChat)
-                .ValueGeneratedOnAdd();
-                entity.HasOne(a => a.rel_User1_User2)
-                .WithMany(b => b.relChat_User1)
-                .HasForeignKey(f => f.idUser1)
-                .HasConstraintName("FK_RelacionUsuario2Chat")
-                .OnDelete(DeleteBehavior.Restrict);
-                entity.HasOne(a => a.rel_User2_User1)
-                .WithMany(b => b.relChat_User2)
-                .HasForeignKey(f => f.idUser2)
-                .HasConstraintName("FK_RelacionUsuario1Chat")
-                .OnDelete(DeleteBehavior.Cascade);
+                entity.HasKey(c => c.IdChat);
+
+                entity.HasQueryFilter(u => !u.isDelete);
+
+                entity.Property(c => c.ChatName);
+
                 entity.Property(uc => uc.isDelete)
-                .IsRequired()
-                .HasDefaultValue(false);
+               .IsRequired()
+               .HasDefaultValue(false);
 
                 entity.Property(uc => uc.Created)
                 .HasDefaultValueSql("getdate()");
@@ -67,24 +69,46 @@ namespace PruebaChatMVC.Data
                 entity.HasData(chats);
             });
 
+
             modelBuilder.Entity<Messages>(entity =>
             {
-                entity.HasKey(d => d.idMensaje);
-                entity.HasOne(s => s.relSender_User)
-                       .WithMany(u => u.relUser_Sender)
+                entity.HasKey(d => d.idMessage);
+                entity.HasOne(s => s.UserSended)
+                       .WithMany(u => u.UserSendMessage)
                        .HasConstraintName("FK_RelacionUsuarioEmisor")
                        .OnDelete(DeleteBehavior.Restrict)
-                       .HasForeignKey(f => f.Sender);
-                entity.HasOne(r => r.relReciver_User)
-                       .WithMany(u => u.relUser_Reciber)
-                       .HasConstraintName("FK_RelacionUsuarioReceptor")
-                       .OnDelete(DeleteBehavior.Restrict)
-                       .HasForeignKey(f => f.Reciber);
-                entity.HasOne(m => m.relMensaje_Chat)
-                       .WithMany(ch => ch.Messages)
-                       .HasConstraintName("FK_RelacionMensajesChat")
+                       .HasForeignKey(f => f.IdUserSender);
+                entity.HasOne(m => m.ChatSended)
+                       .WithMany(ch => ch.MessagesSendedToThisChat)
+                       .HasConstraintName("FK_RelacionChatMensajes")
                        .OnDelete(DeleteBehavior.Cascade)
                        .HasForeignKey(f => f.IdChatSended);
+                entity.HasQueryFilter(u => !u.isDelete);
+
+                entity.Property(m => m.isDelete)
+                      .IsRequired()
+                      .HasDefaultValue(false);
+
+                entity.Property(m => m.Created)
+                      .HasDefaultValueSql("getdate()");
+            });
+
+            modelBuilder.Entity<Participants>(entity =>
+            {
+                entity.HasKey(p => p.IdParticipants);
+
+                entity.HasOne(p => p.UserInTheChat)
+                      .WithMany(u => u.ParticipantInChat)
+                      .HasForeignKey(f => f.IdUser)
+                      .HasConstraintName("FK_RelacionParticipantesChat")
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasOne(p => p.Chat)
+                      .WithMany(c => c.ChatParticipants)
+                      .HasForeignKey(f => f.IdChat)
+                      .HasConstraintName("ChatParticipants")
+                      .OnDelete(DeleteBehavior.Cascade);
+                entity.HasQueryFilter(u => !u.isDelete);
+
                 entity.Property(m => m.isDelete)
                       .IsRequired()
                       .HasDefaultValue(false);
@@ -92,7 +116,7 @@ namespace PruebaChatMVC.Data
                 entity.Property(m => m.Created)
                       .HasDefaultValueSql("getdate()");
 
-
+                entity.HasData(participants);
             });
         }
     }

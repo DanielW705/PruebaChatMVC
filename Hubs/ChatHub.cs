@@ -6,25 +6,26 @@ using System.Threading.Tasks;
 using System.Text.Json;
 using PruebaChatMVC.Models;
 using PruebaChatMVC.Data;
+using PruebaChatMVC.Dto;
+using PruebaChatMVC.UseCase;
 
 namespace PruebaChatMVC.Hubs
 {
     public class ChatHub : Hub
     {
-        private readonly ChatPruebaDbContext DBModel;
+        private readonly HandlerMessagesUseCase _handlerMessagesUseCase;
         /*********Lista de donde se guardan los usuarios conectados*************/
-        static List<UserChat> listaUsuarios = new List<UserChat>();
         /***********Evento cuando se conecta el usuario***************/
-        public ChatHub(ChatPruebaDbContext _DBModel)
+        public ChatHub(HandlerMessagesUseCase handlerMessagesUseCase)
         {
-            DBModel = _DBModel;
+            _handlerMessagesUseCase = handlerMessagesUseCase;
         }
         public override Task OnConnectedAsync()
         {
             return base.OnConnectedAsync();
         }
         /**************Evento de usuario conectado, para mandarlo a todos********************/
-        public async Task UsuarioConectado(string id, string nombre)
+        public async Task UsuarioConectado(UserDto userDto)
         {
             //listaUsuarios.Add(new UserChat(Guid.Parse(id), nombre, Context.ConnectionId));
             //string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
