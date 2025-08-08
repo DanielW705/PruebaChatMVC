@@ -2,7 +2,7 @@
 
 namespace PruebaChatMVC.Models
 {
-    public class UsersConnected
+    public class UsersConnected : SoftDelete
     {
         public Guid IdUser { get; set; }
 

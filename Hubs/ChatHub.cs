@@ -28,19 +28,19 @@ namespace PruebaChatMVC.Hubs
         /**************Evento de usuario conectado, para mandarlo a todos********************/
         public async Task UserOnline(UserDto userDto)
         {
-            _handlerMessagesUseCase.onLoginUser(userDto, Context.ConnectionId);
-            await Clients.All.SendAsync("ListUpdate", _handlerMessagesUseCase.UsersConnected);
+            await _handlerMessagesUseCase.onLoginUser(userDto, Context.ConnectionId);
+            await Clients.All.SendAsync("ListUpdate", await _handlerMessagesUseCase.UpdatedListOfUsers());
         }
         /****************Desconexion de todos los usuarios********************/
         public async Task UserOffline(UserDto userDto)
         {
-            _handlerMessagesUseCase.onLogOutUser(userDto);
-            await Clients.All.SendAsync("ListUpdate", _handlerMessagesUseCase.UsersConnected);
+            await _handlerMessagesUseCase.onLogOutUser(userDto);
+            await Clients.All.SendAsync("ListUpdate", await _handlerMessagesUseCase.UpdatedListOfUsers());
         }
         /**************Se borra al usuario de la lista para mantener actualizado***************/
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            _handlerMessagesUseCase.onLogOutUser(Context.ConnectionId);
+            await _handlerMessagesUseCase.onLogOutUser(Context.ConnectionId);
             await base.OnDisconnectedAsync(exception);
         }
         /***************Evento de Usuario envio mensaje****************/

@@ -11,5 +11,7 @@ namespace PruebaChatMVC.Models
         public ICollection<Participants> ParticipantInChat { get; set; }
 
         public ICollection<Messages> UserSendMessage { get; set; }
+
+        public UsersConnected UserIsConnected { get; set; }
     }
 }

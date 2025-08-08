@@ -200,6 +200,40 @@ namespace PruebaChatMVC.Migrations
                         });
                 });
 
+            modelBuilder.Entity("PruebaChatMVC.Models.UsersConnected", b =>
+                {
+                    b.Property<Guid>("IdUser")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<string>("Idconetxt")
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.Property<bool>("IsConnected")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
+
+                    b.Property<DateTime>("LastConnected")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("getdate()");
+
+                    b.Property<bool>("isDelete")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(false);
+
+                    b.HasKey("IdUser");
+
+                    b.ToTable("UsersConnected");
+                });
+
             modelBuilder.Entity("PruebaChatMVC.Models.Messages", b =>
                 {
                     b.HasOne("PruebaChatMVC.Models.Chats", "ChatSended")
@@ -228,7 +262,7 @@ namespace PruebaChatMVC.Migrations
                         .HasForeignKey("IdChat")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
-                        .HasConstraintName("ChatParticipants");
+                        .HasConstraintName("Fk_ChatConSusParticipantes");
 
                     b.HasOne("PruebaChatMVC.Models.Users", "UserInTheChat")
                         .WithMany("ParticipantInChat")
@@ -242,6 +276,18 @@ namespace PruebaChatMVC.Migrations
                     b.Navigation("UserInTheChat");
                 });
 
+            modelBuilder.Entity("PruebaChatMVC.Models.UsersConnected", b =>
+                {
+                    b.HasOne("PruebaChatMVC.Models.Users", "UserConnected")
+                        .WithOne("UserIsConnected")
+                        .HasForeignKey("PruebaChatMVC.Models.UsersConnected", "IdUser")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired()
+                        .HasConstraintName("Fk_UsuarioConectadoUsuario");
+
+                    b.Navigation("UserConnected");
+                });
+
             modelBuilder.Entity("PruebaChatMVC.Models.Chats", b =>
                 {
                     b.Navigation("ChatParticipants");
@@ -252,6 +298,8 @@ namespace PruebaChatMVC.Migrations
             modelBuilder.Entity("PruebaChatMVC.Models.Users", b =>
                 {
                     b.Navigation("ParticipantInChat");
+
+                    b.Navigation("UserIsConnected");
 
                     b.Navigation("UserSendMessage");
                 });

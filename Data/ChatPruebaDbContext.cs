@@ -15,7 +15,9 @@ namespace PruebaChatMVC.Data
 
         public DbSet<Messages> Mensajes { get; set; }
 
-        public DbSet<Participants> Participantes {  get; set; }
+        public DbSet<Participants> Participantes { get; set; }
+
+        public DbSet<UsersConnected> UsersConnected { get; set; }
         public ChatPruebaDbContext(DbContextOptions<ChatPruebaDbContext> options) : base(options)
         {
         }
@@ -107,7 +109,7 @@ namespace PruebaChatMVC.Data
                 entity.HasOne(p => p.Chat)
                       .WithMany(c => c.ChatParticipants)
                       .HasForeignKey(f => f.IdChat)
-                      .HasConstraintName("ChatParticipants")
+                      .HasConstraintName("Fk_ChatConSusParticipantes")
                       .OnDelete(DeleteBehavior.Cascade);
                 entity.HasQueryFilter(u => !u.isDelete);
 
@@ -119,6 +121,34 @@ namespace PruebaChatMVC.Data
                       .HasDefaultValueSql("getdate()");
 
                 entity.HasData(participants);
+            });
+
+            modelBuilder.Entity<UsersConnected>(entity =>
+            {
+                entity.HasKey(uc => uc.IdUser);
+
+                entity.Property(uc => uc.Idconetxt)
+                      .HasMaxLength(30);
+
+                entity.Property(uc => uc.IsConnected)
+                      .IsRequired()
+                      .HasDefaultValue(true);
+
+                entity.Property(uc => uc.LastConnected)
+                      .HasDefaultValueSql("getdate()");
+
+                entity.Property(m => m.isDelete)
+                     .IsRequired()
+                     .HasDefaultValue(false);
+
+                entity.Property(m => m.Created)
+                      .HasDefaultValueSql("getdate()");
+
+                entity.HasOne(ch => ch.UserConnected)
+                      .WithOne(u => u.UserIsConnected)
+                      .HasForeignKey<UsersConnected>(ch => ch.IdUser)
+                      .HasConstraintName("Fk_UsuarioConectadoUsuario")
+                      .OnDelete(DeleteBehavior.NoAction);
             });
         }
     }
