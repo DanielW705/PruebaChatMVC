@@ -8,6 +8,7 @@ using PruebaChatMVC.Models;
 using PruebaChatMVC.Data;
 using PruebaChatMVC.Dto;
 using PruebaChatMVC.UseCase;
+using ROP;
 
 namespace PruebaChatMVC.Hubs
 {
@@ -25,58 +26,36 @@ namespace PruebaChatMVC.Hubs
             return base.OnConnectedAsync();
         }
         /**************Evento de usuario conectado, para mandarlo a todos********************/
-        public async Task UsuarioConectado(UserDto userDto)
+        public async Task UserOnline(UserDto userDto)
         {
-            //listaUsuarios.Add(new UserChat(Guid.Parse(id), nombre, Context.ConnectionId));
-            //string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
-            //DBModel.UsuarioChat.Add(new UserChat { idUser = Guid.Parse(id), idChat = Context.ConnectionId, UserName = nombre });
-            //DBModel.SaveChanges();
-            //await Clients.All.SendAsync("RetornoDeConectados", lista);
+            _handlerMessagesUseCase.onLoginUser(userDto, Context.ConnectionId);
+            await Clients.All.SendAsync("ListUpdate", _handlerMessagesUseCase.UsersConnected);
         }
         /****************Desconexion de todos los usuarios********************/
-        public async Task UsuarioDesconectado()
+        public async Task UserOffline(UserDto userDto)
         {
-            await Clients.All.SendAsync("RetornoDeDatos", listaUsuarios);
+            _handlerMessagesUseCase.onLogOutUser(userDto);
+            await Clients.All.SendAsync("ListUpdate", _handlerMessagesUseCase.UsersConnected);
         }
         /**************Se borra al usuario de la lista para mantener actualizado***************/
         public async override Task OnDisconnectedAsync(Exception exception)
         {
-            //UserChat usuarioAEliminar = (from usurio in listaUsuarios
-            //                             where usurio.idChat == Context.ConnectionId
-            //                             select usurio).First();
-            //string lista = JsonSerializer.Serialize(listaUsuarios.ToArray());
-            //DBModel.UsuarioChat.Remove(usuarioAEliminar);
-            //DBModel.SaveChanges();
-            //listaUsuarios.Remove(usuarioAEliminar);
-            //await Clients.All.SendAsync("RetornoDeConectados", lista);
-            //await base.OnDisconnectedAsync(exception);
+            _handlerMessagesUseCase.onLogOutUser(Context.ConnectionId);
+            await base.OnDisconnectedAsync(exception);
         }
         /***************Evento de Usuario envio mensaje****************/
-        public async Task EnviarMensaje(string message, string IdReceiver, string date)
+        public async Task SendMessage(SendMessageDto messageDto)
         {
-            //string idMio = Context.ConnectionId;
-            //string Sender = (from usuario in listaUsuarios
-            //                 where usuario.idChat == Context.ConnectionId
-            //                 select usuario.UserName).First();
-            //Guid idSender = (from usuario in listaUsuarios
-            //                 where usuario.idChat == idMio
-            //                 select usuario.idUser).First();
-            //Guid idReciber = (from usuario in listaUsuarios
-            //                  where usuario.idChat == IdReceiver
-            //                  select usuario.idUser).First();
-            //DBModel.MensajesEnviados.Add(new Messages
-            //{
-            //    idMensaje = Guid.NewGuid(),
-            //    nameSender = Sender,
-            //    Mensaje = message,
-            //    FechaDeEnvio = DateTime.Parse(date),
-            //    Sender = idSender,
-            //    Reciber = idReciber,
-            //    visto = false
-            //});
-            //DBModel.SaveChanges();
-            //await Clients.Client(idMio).SendAsync("MensajeMio", message, date, Sender);
-            //await Clients.Client(IdReceiver).SendAsync("MensajeRecibido", message, date, Sender, idMio);
+            if (messageDto.IdReciber is not null)
+            {
+                (string IdMessageFrom, Result<Messages> message) = await _handlerMessagesUseCase.SendMessage(messageDto);
+                await Clients.Client(IdMessageFrom).SendAsync("MessageRecibed", message);
+            }
+            else
+            {
+                (string NameGroup, Result<Messages> message) = await _handlerMessagesUseCase.SendMessage(messageDto);
+                await Clients.Group(NameGroup).SendAsync("MessageRecibed", message);
+            }
         }
 
     }

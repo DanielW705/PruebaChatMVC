@@ -1,22 +1,23 @@
 ﻿@using PruebaChatMVC.Dto
 @using PruebaChatMVC.ViewModel;
 @model ChatsViewModel;
-<section>
-    <aside>
-        <ul>
+<section class="ChatBody">
+    <aside class="ChatsAvailableAside">
+        <ul class="ListOfChats">
             @foreach (ChatDto chat in Model.Chats)
             {
-                <li>
-                    <form>
-                        <input type="hidden" value="@chat.IdChat" />
-                        <input type="hidden" value="@chat.TypeOfChat" />
-                        <input type="hidden" value="@chat.ChatName" />
+                <li class="Chat">
+                    <form asp-action="ChatMessages" asp-controller="Home">
+                        <input type="hidden" name="IdChat" value="@chat.IdChat" />
+                        <input type="hidden" name="TypeOfChat" value="@((int)chat.TypeOfChat)" />
+                        <input type="hidden" name="ChatName" value="@chat.ChatName" />
                         <button type="submit">@chat.ChatName</button>
                     </form>
                 </li>
             }
         </ul>
     </aside>
-    <section>
+    <section class="MessagesBody">
     </section>
 </section>
+<script type="text/javascript" src="~/js/Index.js"></script>

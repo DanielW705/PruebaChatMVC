@@ -10,10 +10,12 @@ namespace PruebaChatMVC.Data
         private readonly UserSeeder _userSeeder = new UserSeeder();
         private readonly ChatSeeder _chatSeeder = new ChatSeeder();
         private readonly ParticipantsSeeder _participantsSeeder = new ParticipantsSeeder();
-        public DbSet<Users> Usuario { get; set; }
+        public DbSet<Users> Usuarios { get; set; }
         public DbSet<Chats> Chats { get; set; }
 
-        public DbSet<Messages> MensajesEnviados { get; set; }
+        public DbSet<Messages> Mensajes { get; set; }
+
+        public DbSet<Participants> Participantes {  get; set; }
         public ChatPruebaDbContext(DbContextOptions<ChatPruebaDbContext> options) : base(options)
         {
         }

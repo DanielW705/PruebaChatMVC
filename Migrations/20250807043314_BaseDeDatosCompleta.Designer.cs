@@ -12,8 +12,8 @@ using PruebaChatMVC.Data;
 namespace PruebaChatMVC.Migrations
 {
     [DbContext(typeof(ChatPruebaDbContext))]
-    [Migration("20250807011802_X")]
-    partial class X
+    [Migration("20250807043314_BaseDeDatosCompleta")]
+    partial class BaseDeDatosCompleta
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -102,7 +102,7 @@ namespace PruebaChatMVC.Migrations
 
                     b.HasIndex("IdUserSender");
 
-                    b.ToTable("MensajesEnviados");
+                    b.ToTable("Mensajes");
                 });
 
             modelBuilder.Entity("PruebaChatMVC.Models.Participants", b =>
@@ -135,7 +135,7 @@ namespace PruebaChatMVC.Migrations
 
                     b.HasIndex("IdUser");
 
-                    b.ToTable("Participants");
+                    b.ToTable("Participantes");
 
                     b.HasData(
                         new
@@ -182,7 +182,7 @@ namespace PruebaChatMVC.Migrations
 
                     b.HasKey("IdUser");
 
-                    b.ToTable("Usuario");
+                    b.ToTable("Usuarios");
 
                     b.HasData(
                         new

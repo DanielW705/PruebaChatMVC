@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace PruebaChatMVC.Migrations
 {
     /// <inheritdoc />
-    public partial class X : Migration
+    public partial class BaseDeDatosCompleta : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -30,7 +30,7 @@ namespace PruebaChatMVC.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Usuario",
+                name: "Usuarios",
                 columns: table => new
                 {
                     IdUser = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -41,11 +41,11 @@ namespace PruebaChatMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Usuario", x => x.IdUser);
+                    table.PrimaryKey("PK_Usuarios", x => x.IdUser);
                 });
 
             migrationBuilder.CreateTable(
-                name: "MensajesEnviados",
+                name: "Mensajes",
                 columns: table => new
                 {
                     idMessage = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -59,7 +59,7 @@ namespace PruebaChatMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_MensajesEnviados", x => x.idMessage);
+                    table.PrimaryKey("PK_Mensajes", x => x.idMessage);
                     table.ForeignKey(
                         name: "FK_RelacionChatMensajes",
                         column: x => x.IdChatSended,
@@ -69,13 +69,13 @@ namespace PruebaChatMVC.Migrations
                     table.ForeignKey(
                         name: "FK_RelacionUsuarioEmisor",
                         column: x => x.IdUserSender,
-                        principalTable: "Usuario",
+                        principalTable: "Usuarios",
                         principalColumn: "IdUser",
                         onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Participants",
+                name: "Participantes",
                 columns: table => new
                 {
                     IdParticipants = table.Column<int>(type: "int", nullable: false)
@@ -87,7 +87,7 @@ namespace PruebaChatMVC.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Participants", x => x.IdParticipants);
+                    table.PrimaryKey("PK_Participantes", x => x.IdParticipants);
                     table.ForeignKey(
                         name: "ChatParticipants",
                         column: x => x.IdChat,
@@ -97,7 +97,7 @@ namespace PruebaChatMVC.Migrations
                     table.ForeignKey(
                         name: "FK_RelacionParticipantesChat",
                         column: x => x.IdUser,
-                        principalTable: "Usuario",
+                        principalTable: "Usuarios",
                         principalColumn: "IdUser",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -108,7 +108,7 @@ namespace PruebaChatMVC.Migrations
                 values: new object[] { new Guid("d7917cfe-0e42-4f57-b237-8a44ae5d3d20"), null, "Chat de Daniel y Julio", 0 });
 
             migrationBuilder.InsertData(
-                table: "Usuario",
+                table: "Usuarios",
                 columns: new[] { "IdUser", "UserName", "pasword" },
                 values: new object[,]
                 {
@@ -117,7 +117,7 @@ namespace PruebaChatMVC.Migrations
                 });
 
             migrationBuilder.InsertData(
-                table: "Participants",
+                table: "Participantes",
                 columns: new[] { "IdParticipants", "IdChat", "IdUser" },
                 values: new object[,]
                 {
@@ -126,23 +126,23 @@ namespace PruebaChatMVC.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_MensajesEnviados_IdChatSended",
-                table: "MensajesEnviados",
+                name: "IX_Mensajes_IdChatSended",
+                table: "Mensajes",
                 column: "IdChatSended");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MensajesEnviados_IdUserSender",
-                table: "MensajesEnviados",
+                name: "IX_Mensajes_IdUserSender",
+                table: "Mensajes",
                 column: "IdUserSender");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participants_IdChat",
-                table: "Participants",
+                name: "IX_Participantes_IdChat",
+                table: "Participantes",
                 column: "IdChat");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Participants_IdUser",
-                table: "Participants",
+                name: "IX_Participantes_IdUser",
+                table: "Participantes",
                 column: "IdUser");
         }
 
@@ -150,16 +150,16 @@ namespace PruebaChatMVC.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "MensajesEnviados");
+                name: "Mensajes");
 
             migrationBuilder.DropTable(
-                name: "Participants");
+                name: "Participantes");
 
             migrationBuilder.DropTable(
                 name: "Chats");
 
             migrationBuilder.DropTable(
-                name: "Usuario");
+                name: "Usuarios");
         }
     }
 }

@@ -1,0 +1,39 @@
+﻿@using PruebaChatMVC.ViewModel;
+@using ROP;
+@using PruebaChatMVC.Dto;
+@model Result<MessagesForAChatViewModel>
+
+@if (Model.Success)
+{
+    <form class="AllMessagesList">
+        <ul>
+            @foreach (MessageDto message in Model.Value.Messages)
+            {
+                if (message.IdUserSender.Equals(Model.Value.ActualUser))
+                {
+                    <li class="MessageSent">@message.Message</li>
+                }
+                else
+                {
+                    <li class="MessageRecived">@message.Message</li>
+                }
+            }
+        </ul>
+        <input type="hidden" name="ActualUser" value="@Model.Value.ActualUser" />
+        <input type="hidden" name="ActualChat" value="@Model.Value.ActualChat" />
+        <input type="hidden" name="UsuarioChat" value="@Model.Value.UsuarioChat" />
+        <input type="text" name="Message" />
+        <button type="submit">Enviar mensaje</button>
+    </form>
+}
+else
+{
+    <section class="errors">
+        <ul>
+            @foreach (Error error in Model.Errors)
+            {
+                <li>@error.Message</li>
+            }
+        </ul>
+    </section>
+}

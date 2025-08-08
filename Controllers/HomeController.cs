@@ -4,6 +4,7 @@ using PruebaChatMVC.ViewModel;
 using ROP;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using PruebaChatMVC.Dto;
 namespace PruebaChatMVC.Controllers
 {
     public class HomeController : Controller
@@ -77,13 +78,10 @@ namespace PruebaChatMVC.Controllers
             ChatsViewModel viewModel = await _userUseCase.Execute().ThrowAsync();
             return View(viewModel);
         }
-        //public IActionResult MensajesChat([FromForm] string idChat, [FromForm] string idReciber, [FromForm] string idSender)
-        //{
-        //    List<Messages> mensajesEnviados = DbModel.MensajesEnviados.Where(
-        //        d => (d.Sender == Guid.Parse(idSender) || d.Reciber == Guid.Parse(idSender)) &&
-        //        (d.Reciber == Guid.Parse(idReciber) || d.Sender == Guid.Parse(idReciber)))
-        //        .Take(10).OrderBy(d => d.FechaDeEnvio).ToList();
-        //    return PartialView(model: (idChat, mensajesEnviados, idSender));
-        //}
+        public async Task<IActionResult> ChatMessages([FromForm] ChatDto chat)
+        {
+            Result<MessagesForAChatViewModel> viewModel = await _userUseCase.GetMessages(chat);
+            return PartialView(viewModel);
+        }
     }
 }
