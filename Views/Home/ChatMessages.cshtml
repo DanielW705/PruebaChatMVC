@@ -5,7 +5,10 @@
 
 @if (Model.Success)
 {
-    <form class="AllMessagesList">
+    <form class="AllMessagesList"
+          data-ActualUser="@Model.Value.ActualUser"
+          data-ActualChat="@Model.Value.ActualChat"
+          data-UsuarioChat="@Model.Value.UsuarioChat">
         <ul>
             @foreach (MessageDto message in Model.Value.Messages)
             {
@@ -19,9 +22,6 @@
                 }
             }
         </ul>
-        <input type="hidden" name="ActualUser" value="@Model.Value.ActualUser" />
-        <input type="hidden" name="ActualChat" value="@Model.Value.ActualChat" />
-        <input type="hidden" name="UsuarioChat" value="@Model.Value.UsuarioChat" />
         <input type="text" name="Message" />
         <button type="submit">Enviar mensaje</button>
     </form>

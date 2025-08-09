@@ -65,9 +65,13 @@ namespace PruebaChatMVC.UseCase
                                                                                    .Where(p => p.IdUser.Equals(userId)))
                                                                                     .Select(c => new ChatDto(c.IdChat, c.ChatName, c.TypeOfChat))
                                                                                     .ToListAsync();
+        private async Task<Result<int>> GetCountOfMessages(ChatDto chat) => await _chatPruebaDbContext.Mensajes
+                                                                                                   .Where(m => m.IdChatSended.Equals(chat.IdChat))
+                                                                                                   .CountAsync();
 
-        private async Task<Result<List<MessageDto>>> GetFirstNMessagesForAChat(ChatDto chat, int n) => await _chatPruebaDbContext.Mensajes
+        private async Task<Result<List<MessageDto>>> GetLastNMessagesForAChat(ChatDto chat, int n, int size) => await _chatPruebaDbContext.Mensajes
                                                                                        .Where(m => m.IdChatSended.Equals(chat.IdChat))
+                                                                                       .Skip(size - n)
                                                                                        .Take(n)
                                                                                        .Select(m => new MessageDto(m.Message, m.IdUserSender, m.IdChatSended))
                                                                                        .ToListAsync();
@@ -79,7 +83,7 @@ namespace PruebaChatMVC.UseCase
             if (chat.TypeOfChat is Enums.TypeOfChat.Individual)
                 output = await _chatPruebaDbContext.Participantes
                          .Where(p => p.IdChat.Equals(chat.IdChat) && !p.IdUser.Equals(actualUser))
-                         .Select(p => p.IdChat)
+                         .Select(p => p.IdUser)
                          .SingleAsync();
 
             return output;
@@ -92,9 +96,10 @@ namespace PruebaChatMVC.UseCase
                                                                         .Bind(x => GetAllChatByUser(x)
                                                                         .Map(l => new ChatsViewModel { Chats = l }));
 
-        public async Task<Result<MessagesForAChatViewModel>> GetMessages(ChatDto chat) => await GetFirstNMessagesForAChat(chat, 10)
+        public async Task<Result<MessagesForAChatViewModel>> GetMessages(ChatDto chat) => await GetCountOfMessages(chat)
+                                                                                                   .Bind(s => GetLastNMessagesForAChat(chat, 10, s)
                                                                                                    .Bind(ms => GetUserInformation()
                                                                                                    .Bind(i => GetReciber(chat, i)
-                                                                                                   .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, UsuarioChat = r })));
+                                                                                                   .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, ActualChat = chat.IdChat, UsuarioChat = r }))));
     }
 }

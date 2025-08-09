@@ -7,10 +7,11 @@
             @foreach (ChatDto chat in Model.Chats)
             {
                 <li class="Chat">
-                    <form asp-action="ChatMessages" asp-controller="Home">
-                        <input type="hidden" name="IdChat" value="@chat.IdChat" />
-                        <input type="hidden" name="TypeOfChat" value="@((int)chat.TypeOfChat)" />
-                        <input type="hidden" name="ChatName" value="@chat.ChatName" />
+                    <form asp-action="ChatMessages"
+                          asp-controller="Home"
+                          data-IdChat="@chat.IdChat"
+                          data-IdTypeOfChat="@((int)chat.TypeOfChat)"
+                          data-ChatName="@chat.ChatName">
                         <button type="submit">@chat.ChatName</button>
                     </form>
                 </li>
@@ -20,4 +21,5 @@
     <section class="MessagesBody">
     </section>
 </section>
-<script type="text/javascript" src="~/js/Index.js"></script>
+<script type="text/javascript" src="~/js/signalr/dist/browser/signalr.js"></script>
+<script type="module" src="~/js/Index.js"></script>

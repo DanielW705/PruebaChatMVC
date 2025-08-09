@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using Microsoft.AspNetCore.SignalR;
 using System.Threading.Tasks;
-using System.Text.Json;
 using PruebaChatMVC.Models;
-using PruebaChatMVC.Data;
 using PruebaChatMVC.Dto;
 using PruebaChatMVC.UseCase;
 using ROP;
@@ -26,21 +22,22 @@ namespace PruebaChatMVC.Hubs
             return base.OnConnectedAsync();
         }
         /**************Evento de usuario conectado, para mandarlo a todos********************/
-        public async Task UserOnline(UserDto userDto)
+        public async Task UserOnline(Guid UserId)
         {
-            await _handlerMessagesUseCase.onLoginUser(userDto, Context.ConnectionId);
+            await _handlerMessagesUseCase.onLoginUser(UserId, Context.ConnectionId);
             await Clients.All.SendAsync("ListUpdate", await _handlerMessagesUseCase.UpdatedListOfUsers());
         }
         /****************Desconexion de todos los usuarios********************/
-        public async Task UserOffline(UserDto userDto)
+        public async Task UserOffline(Guid UserId)
         {
-            await _handlerMessagesUseCase.onLogOutUser(userDto);
+            await _handlerMessagesUseCase.onLogOutUser(UserId);
             await Clients.All.SendAsync("ListUpdate", await _handlerMessagesUseCase.UpdatedListOfUsers());
         }
         /**************Se borra al usuario de la lista para mantener actualizado***************/
         public async override Task OnDisconnectedAsync(Exception exception)
         {
             await _handlerMessagesUseCase.onLogOutUser(Context.ConnectionId);
+            await Clients.All.SendAsync("ListUpdate", await _handlerMessagesUseCase.UpdatedListOfUsers());
             await base.OnDisconnectedAsync(exception);
         }
         /***************Evento de Usuario envio mensaje****************/
@@ -48,12 +45,13 @@ namespace PruebaChatMVC.Hubs
         {
             if (messageDto.IdReciber is not null)
             {
-                (string IdMessageFrom, Result<Messages> message) = await _handlerMessagesUseCase.SendMessage(messageDto);
-                await Clients.Client(IdMessageFrom).SendAsync("MessageRecibed", message);
+                (string IdMessageFrom, MessageDto message) = await _handlerMessagesUseCase.SendMessage(messageDto);
+                if (!string.IsNullOrEmpty(IdMessageFrom))
+                    await Clients.Client(IdMessageFrom).SendAsync("MessageRecibed", message);
             }
             else
             {
-                (string NameGroup, Result<Messages> message) = await _handlerMessagesUseCase.SendMessage(messageDto);
+                (string NameGroup, MessageDto message) = await _handlerMessagesUseCase.SendMessage(messageDto);
                 await Clients.Group(NameGroup).SendAsync("MessageRecibed", message);
             }
         }

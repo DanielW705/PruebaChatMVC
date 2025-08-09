@@ -78,7 +78,7 @@ namespace PruebaChatMVC.Controllers
             ChatsViewModel viewModel = await _userUseCase.Execute().ThrowAsync();
             return View(viewModel);
         }
-        public async Task<IActionResult> ChatMessages([FromForm] ChatDto chat)
+        public async Task<IActionResult> ChatMessages([FromBody] ChatDto chat)
         {
             Result<MessagesForAChatViewModel> viewModel = await _userUseCase.GetMessages(chat);
             return PartialView(viewModel);

@@ -43,12 +43,11 @@ namespace PruebaChatMVC.UseCase
             }
             return output;
         }
-        private async Task<Result<string>> GetSpecificUserIdContext(Guid Iduser) => (await _chatPruebaDbContext.UsersConnected
-                                                                                     .FirstOrDefaultAsync(uc => uc.IdUser.Equals(Iduser)))
-                                                                                     .Idconetxt;
+        private async Task<Result<UsersConnected>> GetSpecificUserIdContext(Guid userId) => await _chatPruebaDbContext.UsersConnected
+                                                                                     .FirstOrDefaultAsync(uc => uc.IdUser.Equals(userId));
 
-        private async Task<Result<UsersConnected>> GetSpecificUserConnected(UserDto user) => await _chatPruebaDbContext.UsersConnected
-                                                                                                   .FirstOrDefaultAsync(uc => uc.IdUser.Equals(user.IdUsuario));
+        private async Task<Result<UsersConnected>> GetSpecificUserConnected(Guid userId) => await _chatPruebaDbContext.UsersConnected
+                                                                                                   .FirstOrDefaultAsync(uc => uc.IdUser.Equals(userId));
 
         private async Task<string> GetGroupName(Guid idGroup) => (await _chatPruebaDbContext.Chats
                                                                         .SingleAsync(c => c.IdChat.Equals(idGroup)))
@@ -60,26 +59,27 @@ namespace PruebaChatMVC.UseCase
                                                                          .Select(u => new UserDto(u.IdUser, u.UserName))
                                                                          .ToListAsync();
 
-        private async Task<(string, Result<Messages>)> ConstructMessage(SendMessageDto newMessage, Messages message)
+        private async Task<(string, MessageDto)> ConstructMessage(SendMessageDto newMessage)
         {
-            (string, Result<Messages>) output;
+            (string, MessageDto) output;
             if (newMessage.IdReciber != null)
             {
-                string IdContext = await GetSpecificUserIdContext(newMessage.IdReciber ?? Guid.Empty).ThrowAsync();
-                output = (IdContext, message);
+                UsersConnected usersConnected = await GetSpecificUserIdContext(newMessage.IdReciber ?? Guid.Empty).ThrowAsync();
+
+                output = (usersConnected?.Idconetxt ?? string.Empty, new MessageDto(newMessage.Message, newMessage.IdUserSender, newMessage.IdChatSended));
             }
             else
             {
                 string chatName = await GetGroupName(newMessage.IdChatSended);
-                output = (chatName, message);
+                output = (chatName, new MessageDto(newMessage.Message, newMessage.IdUserSender, newMessage.IdChatSended));
             }
             return output;
         }
-        private async Task<Result<Unit>> SaveUserOnList(UserDto user, string context)
+        private async Task<Result<Unit>> SaveUserOnList(Guid userId, string context)
         {
             Result<Unit> output = Result.Unit;
 
-            UsersConnected userConnected = await GetSpecificUserConnected(user).ThrowAsync();
+            UsersConnected userConnected = await GetSpecificUserConnected(userId).ThrowAsync();
 
             if (userConnected is not null)
             {
@@ -99,7 +99,9 @@ namespace PruebaChatMVC.UseCase
             {
                 try
                 {
-                    userConnected = new UsersConnected() { IdUser = user.IdUsuario, Idconetxt = context };
+                    userConnected = new UsersConnected() { IdUser = userId, Idconetxt = context };
+                    _chatPruebaDbContext.UsersConnected.Add(userConnected);
+                    await _chatPruebaDbContext.SaveChangesAsync();
                 }
                 catch (Exception ex)
                 {
@@ -110,10 +112,10 @@ namespace PruebaChatMVC.UseCase
             }
             return output;
         }
-        private async Task<Result<Unit>> DisconectUserConnected(UserDto user)
+        private async Task<Result<Unit>> DisconectUserConnected(Guid userId)
         {
             Result<Unit> output = Result.Unit;
-            UsersConnected userConnected = await GetSpecificUserConnected(user).ThrowAsync();
+            UsersConnected userConnected = await GetSpecificUserConnected(userId).ThrowAsync();
             try
             {
                 userConnected.Idconetxt = null;
@@ -152,9 +154,9 @@ namespace PruebaChatMVC.UseCase
             _logger.LogError(exception, "Error");
         }
 
-        public async Task onLogOutUser(UserDto user)
+        public async Task onLogOutUser(Guid userId)
         {
-            var response = await DisconectUserConnected(user);
+            var response = await DisconectUserConnected(userId);
             if (!response.Success)
             {
                 string Json = response.Errors.FirstOrDefault().Message;
@@ -170,16 +172,16 @@ namespace PruebaChatMVC.UseCase
                 LogLastError(Json);
             }
         }
-        public async Task onLoginUser(UserDto user, string context)
+        public async Task onLoginUser(Guid userId, string context)
         {
-            var response = await SaveUserOnList(user, context);
+            var response = await SaveUserOnList(userId, context);
             if (!response.Success)
             {
                 string Json = response.Errors.FirstOrDefault().Message;
                 LogLastError(Json);
             }
         }
-        public async Task<(string, Result<Messages>)> SendMessage(SendMessageDto message) => await SaveAMessage(message).Map(m => ConstructMessage(message, m)).ThrowAsync();
+        public async Task<(string, MessageDto)> SendMessage(SendMessageDto message) => await SaveAMessage(message).Map(m => ConstructMessage(message)).ThrowAsync();
 
         public async Task<List<UserDto>> UpdatedListOfUsers() => await GetAllUsers().ThrowAsync();
 

@@ -45,9 +45,13 @@ namespace PruebaChatMVC
 
             services.AddDbContext<ChatPruebaDbContext>(options => options.UseSqlServer(conexion));
 
-            services.AddSingleton<HandlerCookieInformationUseCase>();
+            services.AddTransient<HandlerCookieInformationUseCase>();
 
-            services.AddScoped<HanderUserUseCase>();
+            services.AddTransient<HanderUserUseCase>();
+
+            services.AddTransient<HandlerMessagesUseCase>();
+
+            services.AddTransient<ChatHub>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
