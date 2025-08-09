@@ -3,37 +3,46 @@
 @using PruebaChatMVC.Dto;
 @model Result<MessagesForAChatViewModel>
 
-@if (Model.Success)
-{
-    <form class="AllMessagesList"
+
+<section class="chatBody">
+    <nav class="chatControllButtons">
+        <ul class="controlButtonsList">
+            <li class="controlButtonHide"></li>
+            <li class="controButtonClose"></li>
+        </ul>
+    </nav>
+    <form class="allMessagesList"
           data-ActualUser="@Model.Value.ActualUser"
           data-ActualChat="@Model.Value.ActualChat"
           data-UsuarioChat="@Model.Value.UsuarioChat">
-        <ul>
-            @foreach (MessageDto message in Model.Value.Messages)
-            {
-                if (message.IdUserSender.Equals(Model.Value.ActualUser))
+        @if (Model.Success)
+        {
+            <ul class="listOfChats">
+                @foreach (MessageDto message in Model.Value.Messages)
                 {
-                    <li class="MessageSent">@message.Message</li>
+                    if (message.IdUserSender.Equals(Model.Value.ActualUser))
+                    {
+                        <li class="messageSent">@message.Message</li>
+                    }
+                    else
+                    {
+                        <li class="messageRecived">@message.Message</li>
+                    }
                 }
-                else
-                {
-                    <li class="MessageRecived">@message.Message</li>
-                }
-            }
-        </ul>
-        <input type="text" name="Message" />
-        <button type="submit">Enviar mensaje</button>
+            </ul>
+            <input class="inputMessage" type="text" name="Message" />
+            <button type="submit">Enviar mensaje</button>
+        }
+        else
+        {
+            <section class="errors">
+                <ul>
+                    @foreach (Error error in Model.Errors)
+                    {
+                        <li>@error.Message</li>
+                    }
+                </ul>
+            </section>
+        }
     </form>
-}
-else
-{
-    <section class="errors">
-        <ul>
-            @foreach (Error error in Model.Errors)
-            {
-                <li>@error.Message</li>
-            }
-        </ul>
-    </section>
-}
+</section>

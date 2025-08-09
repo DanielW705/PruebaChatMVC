@@ -94,7 +94,7 @@ namespace PruebaChatMVC.UseCase
 
         public async Task<Result<ChatsViewModel>> Execute() => await GetUserInformation()
                                                                         .Bind(x => GetAllChatByUser(x)
-                                                                        .Map(l => new ChatsViewModel { Chats = l }));
+                                                                        .Map(l => new ChatsViewModel { userId = x, Chats = l }));
 
         public async Task<Result<MessagesForAChatViewModel>> GetMessages(ChatDto chat) => await GetCountOfMessages(chat)
                                                                                                    .Bind(s => GetLastNMessagesForAChat(chat, 10, s)

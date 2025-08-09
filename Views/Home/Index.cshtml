@@ -1,13 +1,14 @@
 ﻿@using PruebaChatMVC.Dto
 @using PruebaChatMVC.ViewModel;
 @model ChatsViewModel;
-<section class="ChatBody">
-    <aside class="ChatsAvailableAside">
-        <ul class="ListOfChats">
+<section class="chatBody" data-userId="@Model.userId">
+    <aside class="chatsAvailableAside">
+        <ul class="listOfChats">
             @foreach (ChatDto chat in Model.Chats)
             {
-                <li class="Chat">
-                    <form asp-action="ChatMessages"
+                <li class="chat">
+                    <form class="chatButton"
+                          asp-action="ChatMessages"
                           asp-controller="Home"
                           data-IdChat="@chat.IdChat"
                           data-IdTypeOfChat="@((int)chat.TypeOfChat)"
@@ -18,7 +19,7 @@
             }
         </ul>
     </aside>
-    <section class="MessagesBody">
+    <section class="messagesBody">
     </section>
 </section>
 <script type="text/javascript" src="~/js/signalr/dist/browser/signalr.js"></script>

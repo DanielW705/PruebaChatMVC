@@ -87,6 +87,7 @@ namespace PruebaChatMVC.UseCase
                 {
                     userConnected.Idconetxt = context;
                     userConnected.IsConnected = true;
+                    userConnected.LastConnected = DateTime.Now;
                     await _chatPruebaDbContext.SaveChangesAsync();
                 }
                 catch (Exception ex)
