@@ -66,12 +66,12 @@ namespace PruebaChatMVC.UseCase
             {
                 UsersConnected usersConnected = await GetSpecificUserIdContext(newMessage.IdReciber ?? Guid.Empty).ThrowAsync();
 
-                output = (usersConnected?.Idconetxt ?? string.Empty, new MessageDto(newMessage.Message, newMessage.IdUserSender, newMessage.IdChatSended));
+                output = (usersConnected?.Idconetxt ?? string.Empty, new MessageDto(newMessage.Message, newMessage.IdUserSender, newMessage.IdChatSended, DateTime.Now));
             }
             else
             {
                 string chatName = await GetGroupName(newMessage.IdChatSended);
-                output = (chatName, new MessageDto(newMessage.Message, newMessage.IdUserSender, newMessage.IdChatSended));
+                output = (chatName, new MessageDto(newMessage.Message, newMessage.IdUserSender, newMessage.IdChatSended, DateTime.Now));
             }
             return output;
         }

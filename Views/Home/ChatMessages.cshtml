@@ -4,17 +4,24 @@
 @model Result<MessagesForAChatViewModel>
 
 
-<section class="chatBody">
+<section class="bodyMessages">
     <nav class="chatControllButtons">
         <ul class="controlButtonsList">
-            <li class="controlButtonHide"></li>
-            <li class="controButtonClose"></li>
+            <li class="controlButtonHide">
+                <button class=" btn btnHide" aria-label="Hide">&#128469;</button>
+            </li>
+            <li class="controButtonClose">
+                <button class=" btn btnClose" aria-label="close">&#x2715;</button>
+            </li>
         </ul>
     </nav>
     <form class="allMessagesList"
           data-ActualUser="@Model.Value.ActualUser"
           data-ActualChat="@Model.Value.ActualChat"
           data-UsuarioChat="@Model.Value.UsuarioChat">
+        <section class="chatName">
+            <p class="titleChatName">@Model.Value.chatName</p>
+        </section>
         @if (Model.Success)
         {
             <ul class="listOfChats">
@@ -22,16 +29,28 @@
                 {
                     if (message.IdUserSender.Equals(Model.Value.ActualUser))
                     {
-                        <li class="messageSent">@message.Message</li>
+                        <li class="rowMessage messageSent">
+                            <article class="message">
+                                <p class="textMessage">@message.Message</p>
+                                <time class="dateMessage" datetime="@message.Sended.ToString("yyy-MM-dd HH:mm")">@message.Sended.ToString("yyy-MM-dd HH:mm")</time>
+                            </article>
+                        </li>
                     }
                     else
                     {
-                        <li class="messageRecived">@message.Message</li>
+                        <li class=" rowMessage messageRecived">
+                            <article class="message">
+                                <p class="textMessage">@message.Message</p>
+                                <time class="dateMessage" datetime="@message.Sended.ToString("yyy-MM-dd")">@message.Sended.ToString("yyy-MM-dd HH:mm")</time>
+                            </article>
+                        </li>
                     }
                 }
             </ul>
-            <input class="inputMessage" type="text" name="Message" />
-            <button type="submit">Enviar mensaje</button>
+            <section class="messageButton">
+                <input class="inputMessage" type="text" name="Message" />
+                <button title="Enviar mensaje" class="btnSendMessage" type="submit">Enviar mensaje</button>
+            </section>
         }
         else
         {

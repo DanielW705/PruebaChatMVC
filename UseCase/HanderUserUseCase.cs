@@ -63,7 +63,10 @@ namespace PruebaChatMVC.UseCase
         private async Task<Result<List<ChatDto>>> GetAllChatByUser(Guid userId) => await _chatPruebaDbContext.Chats
                                                                                    .Include(c => c.ChatParticipants
                                                                                    .Where(p => p.IdUser.Equals(userId)))
-                                                                                    .Select(c => new ChatDto(c.IdChat, c.ChatName, c.TypeOfChat))
+                                                                                   .ThenInclude(p => p.UserInTheChat)
+                                                                                    .Select(c => new ChatDto(c.IdChat, c.ChatName ??
+                                                                                        c.ChatParticipants.FirstOrDefault(p => !p.IdUser.Equals(userId)).UserInTheChat.UserName,
+                                                                                        c.TypeOfChat))
                                                                                     .ToListAsync();
         private async Task<Result<int>> GetCountOfMessages(ChatDto chat) => await _chatPruebaDbContext.Mensajes
                                                                                                    .Where(m => m.IdChatSended.Equals(chat.IdChat))
@@ -73,7 +76,8 @@ namespace PruebaChatMVC.UseCase
                                                                                        .Where(m => m.IdChatSended.Equals(chat.IdChat))
                                                                                        .Skip(size - n)
                                                                                        .Take(n)
-                                                                                       .Select(m => new MessageDto(m.Message, m.IdUserSender, m.IdChatSended))
+                                                                                       .OrderBy(m => m.SendTime)
+                                                                                       .Select(m => new MessageDto(m.Message, m.IdUserSender, m.IdChatSended, m.SendTime))
                                                                                        .ToListAsync();
 
         private async Task<Result<Guid?>> GetReciber(ChatDto chat, Guid actualUser)
@@ -100,6 +104,6 @@ namespace PruebaChatMVC.UseCase
                                                                                                    .Bind(s => GetLastNMessagesForAChat(chat, 10, s)
                                                                                                    .Bind(ms => GetUserInformation()
                                                                                                    .Bind(i => GetReciber(chat, i)
-                                                                                                   .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, ActualChat = chat.IdChat, UsuarioChat = r }))));
+                                                                                                   .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, ActualChat = chat.IdChat, UsuarioChat = r, chatName = chat.ChatName }))));
     }
 }

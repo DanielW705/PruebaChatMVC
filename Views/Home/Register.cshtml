@@ -1,20 +1,22 @@
 ﻿@using PruebaChatMVC.ViewModel
 @model LoginRegisterUserViewModel
-<section>
-    <form asp-action="Register" asp-controller="Home" method="post">
-        <h2>Registrar nuevo usuario</h2>
-        <div>
-            <label asp-for="@Model.UserName">Usuario: </label>
-            <input type="text" asp-for="@Model.UserName" placeholder="Ingrese Nuevo Usuario" />
+<section class="dataInputBody">
+    <form class="dataInputForm" asp-action="Register" asp-controller="Home" method="post">
+        <h2 class="title">Registrar nuevo usuario</h2>
+        <div class="input">
+            <label class="label" asp-for="@Model.UserName">Usuario: </label>
+            <input class="inputText" type="text" asp-for="@Model.UserName" placeholder="Ingrese Nuevo Usuario" />
+            <span class="errorValidation" asp-validation-for="@Model.UserName"></span>
         </div>
-        <div>
-            <label asp-for="@Model.Pasword">Contraseña: </label>
-            <input type="text" asp-for="@Model.Pasword" placeholder="Ingrese Nueva Contraseña" />
+        <div class="input">
+            <label class="label" asp-for="@Model.Pasword">Contraseña: </label>
+            <input class="inputText" type="password" asp-for="@Model.Pasword" placeholder="Ingrese Nueva Contraseña" />
+            <span class="errorValidation" asp-validation-for="@Model.Pasword"></span>
         </div>
-        <div asp-validation-summary="ModelOnly"></div>
-        <div>
-            <a asp-action="Login" asp-controller="Home">Ya tengo cuenta</a>
-            <button type="submit">Registrar usuario</button>
+        <div class="summaryErrors" asp-validation-summary="ModelOnly"></div>
+        <div class="controllersButton">
+            <a class="ancleToAction" asp-action="Login" asp-controller="Home">Ya tengo cuenta</a>
+            <button class="button" type="submit">Registrar usuario</button>
         </div>
     </form>
 </section>

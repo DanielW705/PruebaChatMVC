@@ -9,6 +9,8 @@ const chatBody = document.querySelector('.chatBody')
 
 const ChatsIcon = chatBody.querySelectorAll(".chatsAvailableAside .listOfChats .chat .chatButton");
 
+let ul = null;
+
 const OnLoadWindow = (chatBody) => {
     const { userid } = chatBody.dataset;
 
@@ -18,12 +20,49 @@ const OnLoadWindow = (chatBody) => {
 
 
 OnLoadWindow(chatBody);
+const FormatDate = (date) => {
+    date = new Date(date);
+    const año = date.getFullYear();
+    const mes = String(date.getMonth() + 1).padStart(2, '0');
+    const dia = String(date.getDate()).padStart(2, '0');
+    const horas = String(date.getHours()).padStart(2, '0');
+    const minutos = String(date.getMinutes()).padStart(2, '0');
+
+    return `${año}-${mes}-${dia} ${horas}:${minutos}`;
+};
 
 
-const ConstructMessage = (message, type) => {
+const ConstructMessage = (data, type) => {
+
+    console.log(data);
+
     const li = document.createElement("li");
 
-    li.textContent = message;
+    li.classList.add('rowMessage');
+
+    const article = document.createElement("article");
+
+    article.classList.add('message');
+
+    const p = document.createElement('p');
+
+    p.classList.add('textMessage');
+
+    const time = document.createElement('time');
+
+    time.classList.add('dateMessage');
+
+    p.textContent = data.Message;
+
+    time.textContent = FormatDate(data.Sended);
+
+    time.dateTime = FormatDate(data.Sended);
+
+    article.append(p);
+    article.append(time);
+
+    li.append(article);
+
 
     switch (type) {
         case TypeOfMessage.Sender:
@@ -38,7 +77,8 @@ const ConstructMessage = (message, type) => {
 }
 
 const HandlerRecibeMessages = (data) => {
-    ul.appendChild(ConstructMessage(data.message, TypeOfMessage.Reciver))
+    console.log(data);
+    ul.appendChild(ConstructMessage(data, TypeOfMessage.Reciver))
 }
 
 const ParseTxt = (text) => {
@@ -46,7 +86,7 @@ const ParseTxt = (text) => {
 
     let doc = parser.parseFromString(text, 'text/html');
 
-    return doc.body;
+    return doc.body.firstChild;
 }
 const CreateBody = (data) => {
     const bodyCreated = {
@@ -77,7 +117,7 @@ const onSendMessage = (e, chat, ul) => {
         const sendMessageDto = new SendMessageDto(message, actualuser, actualchat, usuariochat);
         input.value = '';
         chat.SendAMessage(sendMessageDto);
-        ul.appendChild(ConstructMessage(message, TypeOfMessage.Sender));
+        ul.appendChild(ConstructMessage(sendMessageDto, TypeOfMessage.Sender));
     }
 
 }
@@ -92,7 +132,7 @@ const MakeFetch = async (e) => {
     const result = ParseTxt(textResponse);
     MessageBody.appendChild(result);
 
-    const ul = result.querySelector(".chatBody .allMessagesList .listOfChats");
+    ul = result.querySelector(".chatBody .allMessagesList .listOfChats");
 
 
     result.addEventListener('submit', (e) => onSendMessage(e, chat, ul))

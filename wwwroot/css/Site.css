@@ -1,5 +1,346 @@
-﻿* {
+﻿:root {
+    --negro-muerte: #0A0A0A;
+    --gray-white: #F7F7F7;
+}
+
+@font-face {
+    font-family: 'NataSans';
+    src: url('../lib/Fonts/NataSans-VariableFont.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('../lib/Fonts/Roboto-VariableFont.ttf');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Roboto Italic';
+    src: url('~/lib/Fonts/Roboto-Italic-VariableFont.ttf');
+    font-weight: normal;
+}
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-size: 1rem;
+    font-family: NataSans, Roboto, Arial;
 }
+
+
+.customNav {
+    width: 100%;
+    height: 10vh;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    box-shadow: rgba(10,10,10, 0.7) 10px -10px 10px 5px;
+    border-radius: 5px;
+}
+
+.mainBody {
+    width: 100%;
+    height: 90vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.dataInputBody {
+    width: 25%;
+    height: 70%;
+    border-radius: 20px;
+    box-shadow: rgba(10,10,10, 0.3) 5px 5px 20px 3px;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+    .dataInputBody .dataInputForm {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr 1fr;
+        height: 90%;
+        justify-items: center;
+        align-content: center;
+        gap: 5px;
+    }
+
+.input {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 35% 65%;
+    grid-template-rows: 50% 50%;
+    justify-items: center;
+}
+
+    .input .errorValidation {
+        width: 100%;
+        height: 100%;
+        padding: 5px;
+        color: red;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        grid-column: span 2;
+    }
+
+    .input .label {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .input .inputText {
+        width: 100%;
+        height: 100%;
+        border: none;
+        padding: 10px;
+        border-bottom: 2px solid var(--negro-muerte);
+        border-radius: 3px;
+    }
+
+.dataInputBody .dataInputForm .summaryErrors {
+    width: 100%;
+    height: 100%;
+}
+
+.controllersButton {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    gap: 10px;
+    justify-items: center;
+    align-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+    .controllersButton .ancleToAction {
+    }
+
+    .controllersButton .button {
+        width: 50%;
+        height: 100%;
+        cursor: pointer;
+        border-radius: 5px;
+        border: none;
+        padding: 10px 0;
+        transition: 0.75s;
+    }
+
+        .controllersButton .button:hover {
+            transform: scale(1.1);
+        }
+
+h1.title {
+    font-size: 2em;
+}
+
+h2.title {
+    font-size: 1.8em;
+}
+
+.chatBody {
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: 10% 90%;
+}
+
+    .chatBody .chatsAvailableAside {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        padding: 20px 0;
+        overflow: hidden;
+        box-shadow: rgba(10,10,10,0.1) 5px 1px 5px 0px;
+    }
+
+        .chatBody .chatsAvailableAside .listOfChats {
+            list-style: none;
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-auto-rows: 5em;
+            overflow: auto;
+            gap: 20px;
+        }
+
+            .chatBody .chatsAvailableAside .listOfChats .chat {
+                display: flex;
+                width: 100%;
+                height: 100%;
+            }
+
+                .chatBody .chatsAvailableAside .listOfChats .chat .chatButton {
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    padding: 5px;
+                    justify-content: center;
+                    align-items: center;
+                }
+
+                    .chatBody .chatsAvailableAside .listOfChats .chat .chatButton .chatClickableButton {
+                        width: 60%;
+                        height: 90%;
+                        font-size: 0.9em;
+                        cursor: pointer;
+                        padding: 5px;
+                        border: 1px solid white;
+                        border-radius: 5px;
+                        transition: 0.75s;
+                        box-shadow: rgba(10,10,10,0.3) -5px 5px 5px;
+                        background-color: lightgray;
+                        color: whitesmoke;
+                    }
+
+                        .chatBody .chatsAvailableAside .listOfChats .chat .chatButton .chatClickableButton:hover {
+                            transform: scale(1.1);
+                        }
+
+    .chatBody .messagesBody {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+        .chatBody .messagesBody .bodyMessages {
+            width: 30em;
+            height: 35em;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 5% 95%;
+            background-color: var(--gray-white);
+            border-radius: 5px;
+            box-shadow: rgba(10, 10, 10, 0.2) 0 10px 10px 8px;
+        }
+
+            .chatBody .messagesBody .bodyMessages .chatControllButtons {
+                width: 100%;
+                height: 100%;
+                display: flex;
+                justify-content: flex-end;
+                align-items: center;
+                background-color: lightsteelblue;
+                border-radius: 5px 5px 0 0;
+                padding: 0 10px;
+            }
+
+                .chatBody .messagesBody .bodyMessages .chatControllButtons .controlButtonsList {
+                    list-style: none;
+                    display: grid;
+                    grid-template-columns: repeat(2, 1fr);
+                    gap: 10px;
+                    width: 20%;
+                    height: 100%;
+                }
+
+                    .chatBody .messagesBody .bodyMessages .chatControllButtons .controlButtonsList .btn {
+                        border: none;
+                        background: none;
+                        cursor: pointer;
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        transition: 0.25s;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .chatControllButtons .controlButtonsList .btnHide:hover {
+                        transform: scale(1.05);
+                        background-color: #8D9FB8;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .chatControllButtons .controlButtonsList .btnClose:hover {
+                        transform: scale(1.05);
+                        background-color: #8D9FB8;
+                    }
+
+            .chatBody .messagesBody .bodyMessages .allMessagesList {
+                display: grid;
+                grid-template-rows: 15% auto 10%;
+                overflow: hidden;
+            }
+
+                .chatBody .messagesBody .bodyMessages .allMessagesList .chatName {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    padding: 0 20px;
+                }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .chatName .titleChatName {
+                        font-size: 1.5em;
+                    }
+
+                .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats {
+                    overflow: auto;
+                    display: flex;
+                    flex-direction: column;
+                    align-content: end;
+                    text-decoration: none;
+                    gap: 20px;
+                    padding-bottom: 20px;
+                }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .rowMessage {
+                        display: flex;
+                        align-items: center;
+                        padding: 0 20px;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .messageSent {
+                        justify-content: start;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .messageRecived {
+                        justify-content: end;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .rowMessage .message {
+                        width: 50%;
+                        padding: 10px 25px;
+                        border-radius: 20px;
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        grid-template-rows: 1fr 1fr;
+                        align-items: center;
+                    }
+
+                        .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .rowMessage .message .textMessage {
+                            grid-column: 1/ span 2;
+                            grid-row: 1;
+                        }
+
+                        .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .rowMessage .message .dateMessage {
+                            grid-row: 2;
+                            font-size: 0.5em;
+                        }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .messageSent .message {
+                        background-color: powderblue;
+                        justify-self: start;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .messageSent .dateMessage {
+                        justify-self: end;
+                        grid-column: 2;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .messageRecived .message {
+                        background-color: gainsboro;
+                        justify-self: start;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats .messageRecived .dateMessage {
+                        justify-self: end;
+                        grid-column: 2;
+                    }

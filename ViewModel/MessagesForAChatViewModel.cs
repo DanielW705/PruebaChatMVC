@@ -9,6 +9,7 @@ namespace PruebaChatMVC.ViewModel
         public Guid ActualUser {  get; set; }
         public Guid ActualChat { get; set; }
         public Guid? UsuarioChat { get; set; }
+        public string chatName { get; set; }
         public List<MessageDto> Messages { get; set; }
     }
 }
