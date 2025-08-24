@@ -344,3 +344,19 @@ h2.title {
                         justify-self: end;
                         grid-column: 2;
                     }
+
+                .chatBody .messagesBody .bodyMessages .allMessagesList .messageButton {
+                    display: flex;
+                    width: 100%;
+                    height: 100%;
+                }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .messageButton .inputMessage {
+                        width: 80%;
+                        height: 100%;
+                        border: none;
+                    }
+
+                    .chatBody .messagesBody .bodyMessages .allMessagesList .messageButton .btnSendMessage {
+                        border: none;
+                    }

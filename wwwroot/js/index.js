@@ -34,8 +34,6 @@ const FormatDate = (date) => {
 
 const ConstructMessage = (data, type) => {
 
-    console.log(data);
-
     const li = document.createElement("li");
 
     li.classList.add('rowMessage');
@@ -77,8 +75,9 @@ const ConstructMessage = (data, type) => {
 }
 
 const HandlerRecibeMessages = (data) => {
-    console.log(data);
-    ul.appendChild(ConstructMessage(data, TypeOfMessage.Reciver))
+
+    const mensaje = SendMessageDto.ToDto(data);
+    ul.appendChild(ConstructMessage(mensaje, TypeOfMessage.Reciver))
 }
 
 const ParseTxt = (text) => {
@@ -114,7 +113,7 @@ const onSendMessage = (e, chat, ul) => {
     const message = input.value;
 
     if (message !== '') {
-        const sendMessageDto = new SendMessageDto(message, actualuser, actualchat, usuariochat);
+        const sendMessageDto = new SendMessageDto(message, actualuser, actualchat, usuariochat, Date.now());
         input.value = '';
         chat.SendAMessage(sendMessageDto);
         ul.appendChild(ConstructMessage(sendMessageDto, TypeOfMessage.Sender));

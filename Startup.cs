@@ -10,6 +10,7 @@ using PruebaChatMVC.LoggerProvider;
 using PruebaChatMVC.Data;
 using PruebaChatMVC.UseCase;
 using Microsoft.AspNetCore.Http;
+using System.Text.Json;
 
 namespace PruebaChatMVC
 {
@@ -37,7 +38,12 @@ namespace PruebaChatMVC
 
             services.AddControllersWithViews();
 
-            services.AddSignalR();
+            services.AddSignalR()
+                .AddJsonProtocol(options =>
+                {
+                    options.PayloadSerializerOptions.PropertyNamingPolicy = null;
+                    options.PayloadSerializerOptions.PropertyNameCaseInsensitive = true;
+                });
 
             string conexion = Configuration.GetConnectionString("ChatPruebaConnectionString");
 

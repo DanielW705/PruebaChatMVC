@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Http;
 using PruebaChatMVC.Dto;
 using System.Linq;
 using System.Collections.Generic;
+using System.Drawing;
 
 namespace PruebaChatMVC.UseCase
 {
@@ -92,6 +93,13 @@ namespace PruebaChatMVC.UseCase
 
             return output;
         }
+        private Result<int> ValidatePageSize(int Chatsieze)
+        {
+            int output = 0;
+            if (Chatsieze > 0)
+                output = 10;
+            return output;
+        }
         public async Task<Result<Unit>> Login(LoginRegisterUserViewModel user) => await FindUserCase(user);
 
         public async Task<Result<Unit>> RegisterNewuser(LoginRegisterUserViewModel user) => await SaveNewUser(user);
@@ -101,9 +109,10 @@ namespace PruebaChatMVC.UseCase
                                                                         .Map(l => new ChatsViewModel { userId = x, Chats = l }));
 
         public async Task<Result<MessagesForAChatViewModel>> GetMessages(ChatDto chat) => await GetCountOfMessages(chat)
-                                                                                                   .Bind(s => GetLastNMessagesForAChat(chat, 10, s)
+                                                                                                   .Bind(countMessages => ValidatePageSize(countMessages)
+                                                                                                   .Bind(s => GetLastNMessagesForAChat(chat, countMessages, s)
                                                                                                    .Bind(ms => GetUserInformation()
                                                                                                    .Bind(i => GetReciber(chat, i)
-                                                                                                   .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, ActualChat = chat.IdChat, UsuarioChat = r, chatName = chat.ChatName }))));
+                                                                                                   .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, ActualChat = chat.IdChat, UsuarioChat = r, chatName = chat.ChatName })))));
     }
 }
