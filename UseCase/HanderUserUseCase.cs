@@ -73,11 +73,11 @@ namespace PruebaChatMVC.UseCase
                                                                                                    .Where(m => m.IdChatSended.Equals(chat.IdChat))
                                                                                                    .CountAsync();
 
-        private async Task<Result<List<MessageDto>>> GetLastNMessagesForAChat(ChatDto chat, int n, int size) => await _chatPruebaDbContext.Mensajes
+        private async Task<Result<List<MessageDto>>> GetLastNMessagesForAChat(ChatDto chat, int TotalChats, int chatSize) => await _chatPruebaDbContext.Mensajes
                                                                                        .Where(m => m.IdChatSended.Equals(chat.IdChat))
-                                                                                       .Skip(size - n)
-                                                                                       .Take(n)
-                                                                                       .OrderBy(m => m.SendTime)
+                                                                                       .Skip(TotalChats - chatSize)
+                                                                                       .Take(chatSize)
+                                                                                       .OrderByDescending(m => m.SendTime)
                                                                                        .Select(m => new MessageDto(m.Message, m.IdUserSender, m.IdChatSended, m.SendTime))
                                                                                        .ToListAsync();
 
@@ -93,10 +93,10 @@ namespace PruebaChatMVC.UseCase
 
             return output;
         }
-        private Result<int> ValidatePageSize(int Chatsieze)
+        private Result<int> ValidatePageSize(int AllMessagesCount)
         {
-            int output = 0;
-            if (Chatsieze > 0)
+            int output = AllMessagesCount;
+            if (AllMessagesCount > 10)
                 output = 10;
             return output;
         }
@@ -109,8 +109,8 @@ namespace PruebaChatMVC.UseCase
                                                                         .Map(l => new ChatsViewModel { userId = x, Chats = l }));
 
         public async Task<Result<MessagesForAChatViewModel>> GetMessages(ChatDto chat) => await GetCountOfMessages(chat)
-                                                                                                   .Bind(countMessages => ValidatePageSize(countMessages)
-                                                                                                   .Bind(s => GetLastNMessagesForAChat(chat, countMessages, s)
+                                                                                                   .Bind(AllMessagesCount => ValidatePageSize(AllMessagesCount)
+                                                                                                   .Bind(s => GetLastNMessagesForAChat(chat, AllMessagesCount, s)
                                                                                                    .Bind(ms => GetUserInformation()
                                                                                                    .Bind(i => GetReciber(chat, i)
                                                                                                    .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, ActualChat = chat.IdChat, UsuarioChat = r, chatName = chat.ChatName })))));

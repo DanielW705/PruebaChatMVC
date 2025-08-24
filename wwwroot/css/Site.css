@@ -284,7 +284,7 @@ h2.title {
                 .chatBody .messagesBody .bodyMessages .allMessagesList .listOfChats {
                     overflow: auto;
                     display: flex;
-                    flex-direction: column;
+                    flex-direction: column-reverse;
                     align-content: end;
                     text-decoration: none;
                     gap: 20px;
