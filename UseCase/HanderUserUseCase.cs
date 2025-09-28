@@ -104,14 +104,14 @@ namespace PruebaChatMVC.UseCase
 
         public async Task<Result<Unit>> RegisterNewuser(LoginRegisterUserViewModel user) => await SaveNewUser(user);
 
-        public async Task<Result<ChatsViewModel>> Execute() => await GetUserInformation()
+        public async Task<Result<ChatsViewModel>> Execute() => await GetUserInformationCookie()
                                                                         .Bind(x => GetAllChatByUser(x)
                                                                         .Map(l => new ChatsViewModel { userId = x, Chats = l }));
 
         public async Task<Result<MessagesForAChatViewModel>> GetMessages(ChatDto chat) => await GetCountOfMessages(chat)
                                                                                                    .Bind(AllMessagesCount => ValidatePageSize(AllMessagesCount)
                                                                                                    .Bind(s => GetLastNMessagesForAChat(chat, AllMessagesCount, s)
-                                                                                                   .Bind(ms => GetUserInformation()
+                                                                                                   .Bind(ms => GetUserInformationCookie()
                                                                                                    .Bind(i => GetReciber(chat, i)
                                                                                                    .Map(r => new MessagesForAChatViewModel { Messages = ms, ActualUser = i, ActualChat = chat.IdChat, UsuarioChat = r, chatName = chat.ChatName })))));
     }

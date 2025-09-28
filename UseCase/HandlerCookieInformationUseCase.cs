@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Security.Claims;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace PruebaChatMVC.UseCase
 {
@@ -20,9 +21,10 @@ namespace PruebaChatMVC.UseCase
         protected Result<Unit> SignUserId(Guid userId)
         {
             _httpContext.HttpContext.Response.Cookies.Append("UserId", JsonConvert.SerializeObject(new { IdUser = userId }), _cookieOptions);
+            _httpContext.HttpContext.Session.SetString("UserId", userId.ToString());
             return Result.Unit;
         }
-        protected Result<Guid> GetUserInformation()
+        protected Result<Guid> GetUserInformationCookie()
         {
             var definition = new { IdUser = Guid.Empty };
 
@@ -36,6 +38,19 @@ namespace PruebaChatMVC.UseCase
             }
             else
                 output = Result.NotFound<Guid>("No se encontro el valor");
+            return output;
+        }
+        protected Guid? GetUserInformationSession()
+        {
+            Guid? output = Guid.Empty;
+            bool ExistCookie = _httpContext.HttpContext.Session.TryGetValue("UserId", out byte[] data);
+            if (ExistCookie)
+            {
+                string userData = Encoding.Default.GetString(data);
+                output = Guid.Parse(userData);
+            }
+            else
+                output = null;
             return output;
         }
     }

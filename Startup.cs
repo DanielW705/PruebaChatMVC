@@ -11,6 +11,7 @@ using PruebaChatMVC.Data;
 using PruebaChatMVC.UseCase;
 using Microsoft.AspNetCore.Http;
 using System.Text.Json;
+using PruebaChatMVC.Components;
 
 namespace PruebaChatMVC
 {
@@ -37,6 +38,7 @@ namespace PruebaChatMVC
             });
 
             services.AddControllersWithViews();
+            services.AddSession();
 
             services.AddSignalR()
                 .AddJsonProtocol(options =>
@@ -51,20 +53,24 @@ namespace PruebaChatMVC
 
             services.AddDbContext<ChatPruebaDbContext>(options => options.UseSqlServer(conexion));
 
-            services.AddTransient<HandlerCookieInformationUseCase>();
+            services.AddScoped<HandlerCookieInformationUseCase>();
 
-            services.AddTransient<HanderUserUseCase>();
+            services.AddScoped<GetUserInformationUseCase>();
+            
+            services.AddScoped<HanderUserUseCase>();
 
-            services.AddTransient<HandlerMessagesUseCase>();
+            services.AddScoped<HandlerMessagesUseCase>();
 
-            services.AddTransient<ChatHub>();
+            services.AddScoped<ChatHub>();
+
+
+            services.AddScoped<HeaderViewComponent>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
 
-            //loggerfactory.AddProvider(new FileLoggerProvider("apps.logs"));
 
             if (env.IsDevelopment())
             {
@@ -84,6 +90,7 @@ namespace PruebaChatMVC
                 MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Lax,
                 Secure = Microsoft.AspNetCore.Http.CookieSecurePolicy.None
             });
+            app.UseSession();
 
             app.UseRouting();
 

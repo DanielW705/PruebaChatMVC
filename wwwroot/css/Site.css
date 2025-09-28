@@ -35,10 +35,18 @@
     height: 10vh;
     padding: 10px 20px;
     display: flex;
+    justify-content: space-between;
     align-items: center;
     box-shadow: rgba(10,10,10, 0.7) 10px -10px 10px 5px;
     border-radius: 5px;
 }
+
+    .customNav .userInfo {
+        width: 20%;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+    }
 
 .mainBody {
     width: 100%;
