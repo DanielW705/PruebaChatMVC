@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.CookiePolicy;
+﻿using LibreriaChatMVC.Data;
+using Microsoft.AspNetCore.CookiePolicy;
+using Microsoft.EntityFrameworkCore;
 
 namespace PruebaChatMVC
 {
@@ -18,6 +20,7 @@ namespace PruebaChatMVC
             });
             services.AddControllersWithViews();
             string conexion = _configuration.GetConnectionString("PruebaChatMVContext") ?? throw new NullReferenceException("Es necesaria una cadena de conexion");
+            services.AddDbContext<PruebaChatMVContext>(options => options.UseSqlServer(conexion));
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
