@@ -1,6 +1,11 @@
 ﻿using LibreriaChatMVC.Data;
+using LibreriaChatMVC.Ports.Primary;
+using LibreriaChatMVC.Ports.Secondary;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
+using PruebaChatMVC.Ports.Primary;
+using PruebaChatMVC.Ports.Secundary;
 
 namespace PruebaChatMVC
 {
@@ -21,6 +26,18 @@ namespace PruebaChatMVC
             services.AddControllersWithViews();
             string conexion = _configuration.GetConnectionString("PruebaChatMVContext") ?? throw new NullReferenceException("Es necesaria una cadena de conexion");
             services.AddDbContext<PruebaChatMVContext>(options => options.UseSqlServer(conexion));
+            services.AddLogging();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                    .AddCookie(options =>
+                    {
+                        options.LoginPath = "/Home/Login";
+                        //options.AccessDeniedPath =""
+                        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+                    });
+            services.AddHttpContextAccessor();
+            services.AddSingleton<IIdentityRepository, IdentityRepository>();
+            services.AddTransient<IValidateUserRepository, ValidateUserRepository>();
+            services.AddTransient<ILoginServices, LoginServices>();
         }
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
@@ -42,10 +59,11 @@ namespace PruebaChatMVC
                 HttpOnly = HttpOnlyPolicy.Always,
             });
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseEndpoints(endopints =>
             {
-                endopints.MapControllerRoute("default","{controller=Home}/{action=Index}");
+                endopints.MapControllerRoute("default","{controller=Home}/{action=Login}");
             });
         }
     }
