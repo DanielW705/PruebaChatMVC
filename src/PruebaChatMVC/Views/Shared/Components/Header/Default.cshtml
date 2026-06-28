@@ -1,0 +1,13 @@
+﻿@model UserDto;
+<nav class="customNav">
+    <h1>Chat en MVC</h1>
+
+
+    @if (Model is not null)
+    {
+        <div class="userInfo">
+            <p>Hola @Model.Nombre</p>
+            <a asp-action="LogOut" asp-controller="Home" asp-route-idUsuario="@Model.Id">Cerrar Sesion</a>
+        </div>
+    }
+</nav>

@@ -5,9 +5,9 @@ VisualStudioVersion = 18.5.11723.231
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{ED413A6A-D13D-4548-BBAE-FA6059985728}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaChatMVC", "PruebaChatMVC\PruebaChatMVC.csproj", "{D2C3809F-3231-4993-B52A-BA7FC8B812D8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaChatMVC", "src\PruebaChatMVC\PruebaChatMVC.csproj", "{D2C3809F-3231-4993-B52A-BA7FC8B812D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibreriaChatMVC", "LibreriaChatMVC\LibreriaChatMVC.csproj", "{BC78718C-FD3B-4340-B2C3-E099F4F1186F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LibreriaChatMVC", "src\LibreriaChatMVC\LibreriaChatMVC.csproj", "{BC78718C-FD3B-4340-B2C3-E099F4F1186F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
