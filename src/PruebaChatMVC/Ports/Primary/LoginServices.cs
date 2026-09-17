@@ -1,8 +1,13 @@
 ﻿using LibreriaChatMVC.Entities;
 using LibreriaChatMVC.Extensions;
+using LibreriaChatMVC.Hubs;
 using LibreriaChatMVC.Ports.Primary;
 using LibreriaChatMVC.Ports.Secondary;
 using LibreriaChatMVC.ViewModels;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using PruebaChatMVC.Hubs;
+using PruebaChatMVC.Models;
 using ROP;
 using System.Security.Authentication;
 
@@ -12,11 +17,13 @@ namespace PruebaChatMVC.Ports.Primary
     {
         private readonly IIdentityRepository _identityRepository;
         private readonly ISignUserRepository _SignUserRepository;
+        private readonly IHubContext<NotificationHub, INotificationsClient> _hubContext;
         private readonly ILogger _logger;
-        public LoginServices(IIdentityRepository identityRepository, ISignUserRepository validateUserRepository, ILogger<LoginServices> logger)
+        public LoginServices(IIdentityRepository identityRepository, ISignUserRepository validateUserRepository, IHubContext<NotificationHub, INotificationsClient> hubContext, ILogger<LoginServices> logger)
         {
             _identityRepository = identityRepository;
             _SignUserRepository = validateUserRepository;
+            _hubContext = hubContext;
             _logger = logger;
         }
 
@@ -26,7 +33,6 @@ namespace PruebaChatMVC.Ports.Primary
             await _SignUserRepository.SignOutUserAsync(id, ctoken);
 
         }
-
         public async Task<Result<UserDto>> RegisterAndLogInAsync(UsuarioViewModel user, CancellationToken ctoken)
         {
             var output = new Result<UserDto>();
@@ -34,7 +40,6 @@ namespace PruebaChatMVC.Ports.Primary
             {
                 var userDb = await _SignUserRepository.CreateNewUserAsync(user.UserName, user.Password, ctoken);
                 await _identityRepository.SignInUserAsync(userDb.Id, userDb.Nombre, userDb.rol.GetDescription());
-                output = userDb;
             }
             catch (InvalidCredentialException ex) when (ex is InvalidCredentialException)
             {
@@ -47,7 +52,6 @@ namespace PruebaChatMVC.Ports.Primary
             }
             return output;
         }
-
         public async Task<Result<UserDto>> TryToLoginAsync(UsuarioViewModel user, CancellationToken ctoken)
         {
             var output = new Result<UserDto>();

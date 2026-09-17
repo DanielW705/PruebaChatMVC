@@ -1,12 +1,13 @@
 ﻿using LibreriaChatMVC.Data;
 using LibreriaChatMVC.Ports.Primary;
 using LibreriaChatMVC.Ports.Secondary;
+using MessagePack;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.CookiePolicy;
 using Microsoft.EntityFrameworkCore;
+using PruebaChatMVC.Hubs;
 using PruebaChatMVC.Ports.Primary;
 using PruebaChatMVC.Ports.Secundary;
-
 namespace PruebaChatMVC
 {
     public class Startup
@@ -24,6 +25,11 @@ namespace PruebaChatMVC
             {
                 options.CheckConsentNeeded = options => true;
                 options.HttpOnly = HttpOnlyPolicy.Always;
+            });
+            services.AddSignalR().AddMessagePackProtocol(options =>
+            {
+                options.SerializerOptions = MessagePackSerializerOptions.Standard
+                .WithSecurity(MessagePackSecurity.UntrustedData);
             });
             services.AddControllersWithViews();
             string conexion = _configuration.GetConnectionString("PruebaChatMVContext") ?? throw new NullReferenceException("Es necesaria una cadena de conexion");

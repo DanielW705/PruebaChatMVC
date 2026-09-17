@@ -1,8 +1,11 @@
+using LibreriaChatMVC.Hubs;
 using LibreriaChatMVC.Models;
 using LibreriaChatMVC.Ports.Primary;
 using LibreriaChatMVC.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using PruebaChatMVC.Hubs;
 using PruebaChatMVC.Models;
 using System.Diagnostics;
 
@@ -12,13 +15,13 @@ namespace PruebaChatMVC.Controllers
     {
         private readonly ILoginServices _loginServices;
         private readonly CancellationTokenSource _tokenSource;
-        public HomeController(ILoginServices loginServices, IHostApplicationLifetime lifetime)
+        public HomeController(ILoginServices loginServices, IHostApplicationLifetime lifetime, IHubContext<NotificationHub, INotificationsClient> hubContext)
         {
-            _tokenSource = CancellationTokenSource.CreateLinkedTokenSource(lifetime.ApplicationStopping);
             _loginServices = loginServices;
+            _tokenSource = CancellationTokenSource.CreateLinkedTokenSource(lifetime.ApplicationStopping);
         }
         [HttpGet]
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
             IActionResult output = View();
             if (HttpContext.User.Identity is not null && HttpContext.User.Identity.IsAuthenticated)
